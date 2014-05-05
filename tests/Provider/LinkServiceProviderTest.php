@@ -6,6 +6,7 @@ use Silex\WebTestCase;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use SimpleSilex\SilexI18n\Provider\LinkServiceProvider;
 
 class LinkServiceProviderTest extends WebTestCase
 {
@@ -26,6 +27,7 @@ class LinkServiceProviderTest extends WebTestCase
          */
         $app->register(new TwigServiceProvider());
         $app->register(new UrlGeneratorServiceProvider());
+        $app->register(new LinkServiceProvider());
 
         /**
          * Configures the application
@@ -37,12 +39,12 @@ class LinkServiceProviderTest extends WebTestCase
 
         $app['system_locales'] = array(
             'en' => array(
-                'abbr' => 'Eng',
+                'abbr' => 'En',
                 'name' => 'English',
             ),
-            'ru' => array(
-                'abbr' => 'Рус',
-                'name' => 'Руссский',
+            'fr' => array(
+                'abbr' => 'Fr',
+                'name' => 'Français',
             ),
             'uk' => array(
                 'abbr' => 'Укр',

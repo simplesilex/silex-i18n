@@ -1,4 +1,4 @@
-silex-i18n
+Silex-i18n
 ==========
 ![Under development](under-development.png)
 
