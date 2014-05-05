@@ -1,0 +1,24 @@
+{
+    "name": "simplesilex/silex-i18n",
+    "description": "Silex internationalization tools",
+    "homepage": "http://www.simplesilex.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yuriy Davletshin",
+            "email": "yuriy.davletshin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "silex/silex": "1.2.*@dev",
+        "symfony/twig-bridge": "2.5.*@dev",
+        "symfony/browser-kit": "2.5.*@dev",
+        "symfony/css-selector": "2.5.*@dev"
+    },
+    "autoload": {
+        "psr-4": { "SimpleSilex\\SilexI18n\\": "src/" }
+    }
+}
