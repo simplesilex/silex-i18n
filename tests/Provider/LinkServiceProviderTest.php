@@ -6,6 +6,7 @@ use Silex\WebTestCase;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Symfony\Component\DomCrawler\Crawler;
 use SimpleSilex\SilexI18n\Provider\LinkServiceProvider;
 
 class LinkServiceProviderTest extends WebTestCase
@@ -68,6 +69,45 @@ class LinkServiceProviderTest extends WebTestCase
     }
 
     /**
+     * Gets an instance of Crawler.
+     *
+     * @param string $uri URI path
+     *
+     * @return Crawler The instance of the Crawler
+     */
+    protected function getCrawler($uri)
+    {
+        $client = $this->createClient();
+        $crawler = $client->request('GET', $uri);
+        $this->assertTrue($client->getResponse()->isOk());
+
+        return $crawler;
+    }
+
+    /**
+     * Assertions for links.
+     *
+     * @param Crawler $crawler      Crawler instance
+     * @param string  $listSelector CSS selector of <ul>
+     * @param array   $params       Number of links
+     */
+    protected function assertlinks(Crawler $crawler, $listSelector, $params)
+    {
+        $this->assertEquals(
+            count($crawler->filter($listSelector . ' > li')),
+            $params['numberOfLinks']
+        );
+        $this->assertEquals(
+            count($crawler->filter($listSelector . ' > li.active')),
+            1
+        );
+        $this->assertEquals(
+            trim($crawler->filter($listSelector . ' > li.active')->text()),
+            $params['contentOfActiveLink']
+        );
+    }
+
+    /**
      * Tests the Silex application.
      */
     public function testInitApplication()
@@ -92,6 +132,30 @@ class LinkServiceProviderTest extends WebTestCase
             get_class($this->app['twig']->getFunction('active_link')),
             'Twig_SimpleFunction'
         );
+    }
+
+    /**
+     * Tests an active link to homepage.
+     */
+    public function testHomeActiveLink()
+    {
+        $crawler = $this->getCrawler('/en/');
+        $this->assertlinks($crawler, 'ul.nav', array(
+            'numberOfLinks' => 2,
+            'contentOfActiveLink' => 'Home'
+        ));
+    }
+
+    /**
+     * Tests an active link to some page.
+     */
+    public function testPageActiveLink()
+    {
+        $crawler = $this->getCrawler('/en/page/');
+        $this->assertlinks($crawler, 'ul.nav', array(
+            'numberOfLinks' => 2,
+            'contentOfActiveLink' => 'Page'
+        ));
     }
 
     /**

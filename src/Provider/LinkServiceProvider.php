@@ -12,12 +12,28 @@ class LinkServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        /**
+         * Configures the application
+         */
+        $app['i18n_link.active_class'] = 'active';
+
+        /**
+         * Extends Twig
+         */
         $app->extend('twig', function (\Twig_Environment $twig) use ($app) {
             $twig->addFunction(
                 new \Twig_SimpleFunction(
                     'active_link',
-                    function () use ($app) {
-                        return;
+                    function ($route, $class = '') use ($app) {
+                        if ($route === $app['request']->get('_route')) {
+                            return ' class="' . $class . ' ' .
+                                $app['i18n_link.active_class'] . '"';
+                        }
+                        if ($class) {
+                            return ' class="' . $class . '"';
+                        }
+
+                        return '';
                     },
                     array('is_safe' => array('html'))
                 )
