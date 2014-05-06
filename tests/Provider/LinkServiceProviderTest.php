@@ -104,4 +104,15 @@ class LinkServiceProviderTest extends WebTestCase
             'Twig_SimpleFunction'
         );
     }
+
+    /**
+     * Tests the `localelink_path` Twig function.
+     */
+    public function testLocaleLinkPath()
+    {
+        $this->assertEquals(
+            get_class($this->app['twig']->getFunction('localelink_path')),
+            'Twig_SimpleFunction'
+        );
+    }
 }
