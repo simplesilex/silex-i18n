@@ -107,8 +107,12 @@ class LinkServiceProvider implements ServiceProviderInterface
             $twig->addFunction(
                 new \Twig_SimpleFunction(
                     'localelink_path',
-                    function () use ($app) {
-                        return;
+                    function ($locale) use ($app) {
+                        $expr = ($locale === $app['locale']);
+                        if ('' === $app['i18n_uri.locale'] && $expr) {
+                            return $app['i18n_uri.parsed_path'];
+                        }
+                        return '/' . $locale . $app['i18n_uri.parsed_path'];
                     },
                     array('is_safe' => array('html'))
                 )

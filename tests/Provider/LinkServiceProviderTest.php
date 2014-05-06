@@ -89,7 +89,7 @@ class LinkServiceProviderTest extends WebTestCase
      *
      * @param Crawler $crawler      Crawler instance
      * @param string  $listSelector CSS selector of <ul>
-     * @param array   $params       Number of links
+     * @param array   $params       Params
      */
     protected function assertlinks(Crawler $crawler, $listSelector, $params)
     {
@@ -213,6 +213,26 @@ class LinkServiceProviderTest extends WebTestCase
         $this->assertEquals(
             get_class($this->app['twig']->getFunction('localelink_path')),
             'Twig_SimpleFunction'
+        );
+    }
+
+    /**
+     * Tests localelink paths for lang links.
+     */
+    public function testLocaleLinkPaths()
+    {
+        $crawler = $this->getCrawler('/en/');
+        $this->assertEquals(
+            $crawler->selectLink('En')->link()->getUri(),
+            'http://localhost/en/'
+        );
+        $this->assertEquals(
+            $crawler->selectLink('Fr')->link()->getUri(),
+            'http://localhost/fr/'
+        );
+        $this->assertEquals(
+            $crawler->selectLink('Укр')->link()->getUri(),
+            'http://localhost/uk/'
         );
     }
 }
