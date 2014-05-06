@@ -170,6 +170,42 @@ class LinkServiceProviderTest extends WebTestCase
     }
 
     /**
+     * Tests an active link for the English.
+     */
+    public function testEnglishActiveLocale()
+    {
+        $crawler = $this->getCrawler('/en/');
+        $this->assertlinks($crawler, 'ul.lang', array(
+            'numberOfLinks' => 3,
+            'contentOfActiveLink' => 'En'
+        ));
+    }
+
+    /**
+     * Tests an active link for the French.
+     */
+    public function testFrenchActiveLocale()
+    {
+        $crawler = $this->getCrawler('/fr/');
+        $this->assertlinks($crawler, 'ul.lang', array(
+            'numberOfLinks' => 3,
+            'contentOfActiveLink' => 'Fr'
+        ));
+    }
+
+    /**
+     * Tests an active link for the Ukrainian.
+     */
+    public function testUkrainianActiveLocale()
+    {
+        $crawler = $this->getCrawler('/uk/');
+        $this->assertlinks($crawler, 'ul.lang', array(
+            'numberOfLinks' => 3,
+            'contentOfActiveLink' => 'Укр'
+        ));
+    }
+
+    /**
      * Tests the `localelink_path` Twig function.
      */
     public function testLocaleLinkPath()

@@ -11,8 +11,8 @@ class LocaleUri
     /**
      * Constructor.
      *
-     * @param array  $localeList The list of locales
      * @param string $requestUri The URI
+     * @param array  $localeList The list of locales
      */
     public function __construct($requestUri, array $localeList)
     {
