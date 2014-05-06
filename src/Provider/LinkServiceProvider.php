@@ -22,6 +22,15 @@ class LinkServiceProvider implements ServiceProviderInterface
                     array('is_safe' => array('html'))
                 )
             );
+            $twig->addFunction(
+                new \Twig_SimpleFunction(
+                    'active_locale',
+                    function () use ($app) {
+                        return;
+                    },
+                    array('is_safe' => array('html'))
+                )
+            );
             return $twig;
         });
     }

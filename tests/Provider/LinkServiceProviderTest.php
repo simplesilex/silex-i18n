@@ -93,4 +93,15 @@ class LinkServiceProviderTest extends WebTestCase
             'Twig_SimpleFunction'
         );
     }
+
+    /**
+     * Tests the `active_locale` Twig function.
+     */
+    public function testActiveLocale()
+    {
+        $this->assertEquals(
+            get_class($this->app['twig']->getFunction('active_locale')),
+            'Twig_SimpleFunction'
+        );
+    }
 }
