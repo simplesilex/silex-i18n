@@ -82,4 +82,15 @@ class LinkServiceProviderTest extends WebTestCase
     {
         $this->assertEquals(get_class($this->app['twig']), 'Twig_Environment');
     }
+
+    /**
+     * Tests the `active_link` Twig function.
+     */
+    public function testActiveLink()
+    {
+        $this->assertEquals(
+            get_class($this->app['twig']->getFunction('active_link')),
+            'Twig_SimpleFunction'
+        );
+    }
 }

@@ -12,6 +12,18 @@ class LinkServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app->extend('twig', function (\Twig_Environment $twig) use ($app) {
+            $twig->addFunction(
+                new \Twig_SimpleFunction(
+                    'active_link',
+                    function () use ($app) {
+                        return;
+                    },
+                    array('is_safe' => array('html'))
+                )
+            );
+            return $twig;
+        });
     }
 
     /**
