@@ -12,7 +12,9 @@
 <ul class="lang">
     {% for locale, params in app.system_locales %}
     <li {{- active_locale(locale) }}>
-        <a href="{{ localelink_path(locale) }}" title="{{ params.name }}">{{ params.abbr }}</a>
+        <a href="{{ localelink_path(locale) }}" title="{{ params.name }}">
+            {{ params.abbr }}
+        </a>
     </li>
     {% endfor %}
 </ul>
