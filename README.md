@@ -29,7 +29,7 @@ run the `php composer.phar install` command to install it:
 
 ## Use
 
-### web/index.php
+#### web/index.php
 ```php
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -38,7 +38,7 @@ $app->run();
 ?>
 ```
 
-### app/src/app.php
+#### app/src/app.php
 ```php
 <?php
 /**
@@ -88,7 +88,7 @@ $app->get('/{_locale}/page/', function (Application $app) {
 ?>
 ```
 
-### app/templates/links.twig
+#### app/templates/links.twig
 ```html
 <!DOCTYPE html>
 <html lang="{{ app.locale }}">
