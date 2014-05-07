@@ -38,6 +38,7 @@ $app->run();
 ?>
 ```
 
+
 app/src/app.php
 ```php
 <?php
@@ -88,6 +89,8 @@ $app->get('/{_locale}/page/', function (Application $app) {
 ?>
 ```
 
+
+app/templates/links.twig
 ```html
 <!DOCTYPE html>
 <html lang="{{ app.locale }}">
