@@ -29,6 +29,8 @@ run the `php composer.phar install` command to install it:
 
 ## Use
 
+### Code
+
 ##### web/index.php
 ```php
 <?php
@@ -109,6 +111,42 @@ $app->get('/{_locale}/page/', function (Application $app) {
         </a>
     </li>
     {% endfor %}
+</ul>
+</body>
+</html>
+```
+
+### Result
+
+##### /en/page/
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+</head>
+<body>
+<ul class="nav">
+    <li><a href="/en/">Home</a></li>
+    <li class="active"><a href="/en/page/">Page</a></li>
+</ul>
+<ul class="lang">
+    <li class="active">
+        <a href="/en/page/" title="English">
+            En
+        </a>
+    </li>
+    <li>
+        <a href="/fr/page/" title="Français">
+            Fr
+        </a>
+    </li>
+    <li>
+        <a href="/uk/page/" title="Українська">
+            Укр
+        </a>
+    </li>
 </ul>
 </body>
 </html>
