@@ -1,9 +1,22 @@
 <?php
 
+/**
+ * Part of the Silex-i18n package.
+ *
+ * @package   SilexLocalizer
+ * @copyright 2014 Yuriy Davletshin
+ * @license   http://opensource.org/licenses/mit-license/ The MIT License (MIT)
+ * @link      http://www.simplesilex.com/
+ */
 namespace SimpleSilex\SilexI18n\Tests;
 
 use SimpleSilex\SilexI18n\LocaleUri;
 
+/**
+ * Tests parsing request URI.
+ *
+ * @author Yuriy Davletshin <yuriy.davletshin@gmail.com>
+ */
 class LocaleUriTest extends \PHPUnit_Framework_TestCase
 {
     protected $locals;
@@ -24,7 +37,7 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates an instance of the LocaleUri.
+     * Creates an instance of LocaleUri.
      */
     protected function init($uri)
     {
@@ -32,7 +45,7 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests the instance of the LocaleUri.
+     * Tests the instance of LocaleUri.
      */
     public function testInitObject()
     {
@@ -59,7 +72,7 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests getting URI property.
+     * Tests getting `uri` property.
      *
      * @dataProvider uriProvider
      */
@@ -70,7 +83,7 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests getting parsedPath property.
+     * Tests getting `parsedPath` property.
      *
      * @dataProvider uriProvider
      */
@@ -81,7 +94,7 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests getting parsedLocale property.
+     * Tests getting `parsedLocale` property.
      *
      * @dataProvider uriProvider
      */

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Part of the Silex-i18n package.
+ *
+ * @package   SilexLocalizer
+ * @copyright 2014 Yuriy Davletshin
+ * @license   http://opensource.org/licenses/mit-license/ The MIT License (MIT)
+ * @link      http://www.simplesilex.com/
+ */
 namespace SimpleSilex\SilexI18n\Provider;
 
 use Silex\Application;
@@ -7,6 +15,11 @@ use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use SimpleSilex\SilexI18n\LocaleUri;
 
+/**
+ * Makes it easy to create locale links.
+ *
+ * @author Yuriy Davletshin <yuriy.davletshin@gmail.com>
+ */
 class LinkServiceProvider implements ServiceProviderInterface
 {
     /**
@@ -15,7 +28,7 @@ class LinkServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         /**
-         * Configures Silex application
+         * Configures this provider
          */
         $app['i18n_link.active_class'] = 'active';
 
@@ -36,7 +49,7 @@ class LinkServiceProvider implements ServiceProviderInterface
         $app['locale_default'] = 'en';
 
         /**
-         * Initialize
+         * Initializes this provider
          */
         $app['i18n_uri'] = $app->share(function () use ($app) {
             return new LocaleUri(
@@ -68,6 +81,19 @@ class LinkServiceProvider implements ServiceProviderInterface
          * Extends Twig
          */
         $app->extend('twig', function (\Twig_Environment $twig) use ($app) {
+            /**
+             * Adds the `active_link` function.
+             *
+             * Use:
+             * <ul class="nav">
+             *     <li {{- active_link('home') }}>
+             *         <a href="{{ path('home') }}">Home</a>
+             *     </li>
+             *     <li {{- active_link('page') }}>
+             *         <a href="{{ path('page') }}">Page</a>
+             *     </li>
+             * </ul>
+             */
             $twig->addFunction(
                 new \Twig_SimpleFunction(
                     'active_link',
@@ -84,6 +110,21 @@ class LinkServiceProvider implements ServiceProviderInterface
                     array('is_safe' => array('html'))
                 )
             );
+
+            /**
+             * Adds the `active_locale` function.
+             *
+             * Use:
+             * <ul class="lang">
+             *     {% for locale, params in app.system_locales %}
+             *     <li {{- active_locale(locale) }}>
+             *         <a href="{{ localelink_path(locale) }}">
+             *             {{ params.name }}
+             *         </a>
+             *     </li>
+             *     {% endfor %}
+             * </ul>
+             */
             $twig->addFunction(
                 new \Twig_SimpleFunction(
                     'active_locale',
@@ -104,6 +145,21 @@ class LinkServiceProvider implements ServiceProviderInterface
                     array('is_safe' => array('html'))
                 )
             );
+
+            /**
+             * Adds the `localelink_path` function.
+             *
+             * Use:
+             * <ul class="lang">
+             *     {% for locale, params in app.system_locales %}
+             *     <li {{- active_locale(locale) }}>
+             *         <a href="{{ localelink_path(locale) }}">
+             *             {{ params.name }}
+             *         </a>
+             *     </li>
+             *     {% endfor %}
+             * </ul>
+             */
             $twig->addFunction(
                 new \Twig_SimpleFunction(
                     'localelink_path',

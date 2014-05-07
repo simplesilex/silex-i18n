@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Part of the Silex-i18n package.
+ *
+ * @package   SilexLocalizer
+ * @copyright 2014 Yuriy Davletshin
+ * @license   http://opensource.org/licenses/mit-license/ The MIT License (MIT)
+ * @link      http://www.simplesilex.com/
+ */
 namespace SimpleSilex\SilexI18n\Tests\Provider;
 
 use Silex\WebTestCase;
@@ -9,6 +17,11 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use SimpleSilex\SilexI18n\Provider\LinkServiceProvider;
 
+/**
+ * Tests LinkServiceProvider.
+ *
+ * @author Yuriy Davletshin <yuriy.davletshin@gmail.com>
+ */
 class LinkServiceProviderTest extends WebTestCase
 {
     /**
@@ -73,7 +86,7 @@ class LinkServiceProviderTest extends WebTestCase
      *
      * @param string $uri URI path
      *
-     * @return Crawler The instance of the Crawler
+     * @return Crawler The instance of Crawler
      */
     protected function getCrawler($uri)
     {
@@ -87,9 +100,9 @@ class LinkServiceProviderTest extends WebTestCase
     /**
      * Assertions for links.
      *
-     * @param Crawler $crawler      Crawler instance
+     * @param Crawler $crawler      The instance of Crawler
      * @param string  $listSelector CSS selector of <ul>
-     * @param array   $params       Params
+     * @param array   $params       An array of parameters
      */
     protected function assertlinks(Crawler $crawler, $listSelector, $params)
     {

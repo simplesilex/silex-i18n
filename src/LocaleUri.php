@@ -1,7 +1,20 @@
 <?php
 
+/**
+ * Part of the Silex-i18n package.
+ *
+ * @package   SilexLocalizer
+ * @copyright 2014 Yuriy Davletshin
+ * @license   http://opensource.org/licenses/mit-license/ The MIT License (MIT)
+ * @link      http://www.simplesilex.com/
+ */
 namespace SimpleSilex\SilexI18n;
 
+/**
+ * Parses request URI.
+ *
+ * @author Yuriy Davletshin <yuriy.davletshin@gmail.com>
+ */
 class LocaleUri
 {
     protected $uri;
@@ -11,8 +24,8 @@ class LocaleUri
     /**
      * Constructor.
      *
-     * @param string $requestUri The URI
-     * @param array  $localeList The list of locales
+     * @param string $requestUri An URI
+     * @param array  $localeList A list of locales
      */
     public function __construct($requestUri, array $localeList)
     {
@@ -35,7 +48,7 @@ class LocaleUri
     }
 
     /**
-     * Gets URI.
+     * Gets the URI.
      *
      * @return string The URI
      */
@@ -45,9 +58,9 @@ class LocaleUri
     }
 
     /**
-     * Gets the URI without locale.
+     * Gets the URI-snippet without locale.
      *
-     * @return string The URI
+     * @return string The snippet of the URI
      */
     public function getParsedPath()
     {
@@ -55,7 +68,7 @@ class LocaleUri
     }
 
     /**
-     * Gets the locale of URI.
+     * Gets the locale of the URI.
      *
      * @return string The locale
      */
