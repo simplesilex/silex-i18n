@@ -6,12 +6,19 @@
 </head>
 <body>
 <ul class="nav">
-    <li {{- active_link('home') }}><a href="{{ path('home') }}">Home</a></li>
-    <li {{- active_link('page') }}><a href="{{ path('page') }}">Page</a></li>
+    <li {{- active_link('home') }}>
+        <a href="{{ path('home') }}">Home</a>
+    </li>
+    <li {{- active_link('page', 'class-1') }}>
+        <a href="{{ path('page') }}">Page</a>
+    </li>
+    <li {{- active_link('some-page', 'class-1 class-2') }}>
+        <a href="{{ path('some-page') }}">Some page</a>
+    </li>
 </ul>
 <ul class="lang">
     {% for locale, params in app.system_locales %}
-    <li {{- active_locale(locale) }}>
+    <li {{- active_locale(locale, 'lang-item') }}>
         <a href="{{ localelink_path(locale) }}" title="{{ params.name }}">
             {{ params.abbr }}
         </a>

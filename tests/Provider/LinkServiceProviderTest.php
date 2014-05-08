@@ -74,6 +74,10 @@ class LinkServiceProviderTest extends WebTestCase
             return $app['twig']->render('links.twig');
         })->bind('home');
 
+        $app->get('/some/page/', function (Application $app) {
+            return $app['twig']->render('links.twig');
+        })->bind('some-page');
+
         $app->get('/{_locale}/page/', function (Application $app) {
             return $app['twig']->render('links.twig');
         })->bind('page');
@@ -106,18 +110,39 @@ class LinkServiceProviderTest extends WebTestCase
      */
     protected function assertlinks(Crawler $crawler, $listSelector, $params)
     {
-        $this->assertEquals(
-            count($crawler->filter($listSelector . ' > li')),
-            $params['numberOfLinks']
-        );
+        if ('ul.nav' === $listSelector) {
+            $this->assertEquals(
+                count($crawler->filter($listSelector . ' > li')),
+                3
+            );
+            $this->assertEquals(
+                count($crawler->filter($listSelector . ' > li.class-1')),
+                2
+            );
+            $this->assertEquals(
+                count($crawler->filter($listSelector . ' > li.class-2')),
+                1
+            );
+        } elseif ('ul.lang' === $listSelector) {
+            $this->assertEquals(
+                count($crawler->filter($listSelector . ' > li')),
+                3
+            );
+            $this->assertEquals(
+                count($crawler->filter($listSelector . ' > li.lang-item')),
+                3
+            );
+        }
         $this->assertEquals(
             count($crawler->filter($listSelector . ' > li.active')),
             1
         );
-        $this->assertEquals(
-            trim($crawler->filter($listSelector . ' > li.active')->text()),
-            $params['contentOfActiveLink']
-        );
+        if (isset($params['content_of_active_links'])) {
+            $this->assertEquals(
+                trim($crawler->filter($listSelector . ' > li.active')->text()),
+                $params['content_of_active_links']
+            );
+        }
     }
 
     /**
@@ -137,115 +162,118 @@ class LinkServiceProviderTest extends WebTestCase
     }
 
     /**
-     * Tests the `active_link` Twig function.
+     * TwigFunctionProvider.
      */
-    public function testActiveLink()
+    public function twigFunctionProvider()
+    {
+        return array(
+            array('active_link'),
+            array('active_locale'),
+            array('localelink_path')
+        );
+    }
+
+    /**
+     * Tests Twig functions.
+     *
+     * @dataProvider twigFunctionProvider
+     */
+    public function testTwigFunctions($funcName)
     {
         $this->assertEquals(
-            get_class($this->app['twig']->getFunction('active_link')),
+            get_class($this->app['twig']->getFunction($funcName)),
             'Twig_SimpleFunction'
         );
     }
 
     /**
-     * Tests an active link to homepage.
+     * UriProvider.
      */
-    public function testHomeActiveLink()
+    public function uriProvider()
     {
-        $crawler = $this->getCrawler('/en/');
+        return array(
+            array(
+                '/en/',
+                'http://localhost/en/',
+                'Home',
+                'En',
+            ),
+            array(
+                '/fr/',
+                'http://localhost/fr/',
+                'Home',
+                'Fr',
+            ),
+            array(
+                '/uk/',
+                'http://localhost/uk/',
+                'Home',
+                'Укр',
+            ),
+            array(
+                '/en/page/',
+                'http://localhost/en/page/',
+                'Page',
+                'En',
+            ),
+            array(
+                '/fr/page/',
+                'http://localhost/fr/page/',
+                'Page',
+                'Fr',
+            ),
+            array(
+                '/uk/page/',
+                'http://localhost/uk/page/',
+                'Page',
+                'Укр',
+            ),
+            array(
+                '/some/page/',
+                'http://localhost/some/page/',
+                'Some page',
+                'En',
+            ),
+        );
+    }
+
+    /**
+     * Tests active links.
+     *
+     * @dataProvider uriProvider
+     */
+    public function testActiveLink($path, $url, $content, $locale)
+    {
+        $crawler = $this->getCrawler($path);
         $this->assertlinks($crawler, 'ul.nav', array(
-            'numberOfLinks' => 2,
-            'contentOfActiveLink' => 'Home'
+            'content_of_active_link' => $content
         ));
     }
 
     /**
-     * Tests an active link to some page.
+     * Tests active locale links.
+     *
+     * @dataProvider uriProvider
      */
-    public function testPageActiveLink()
+    public function testActiveLocale($path, $url, $content, $locale)
     {
-        $crawler = $this->getCrawler('/en/page/');
-        $this->assertlinks($crawler, 'ul.nav', array(
-            'numberOfLinks' => 2,
-            'contentOfActiveLink' => 'Page'
-        ));
-    }
-
-    /**
-     * Tests the `active_locale` Twig function.
-     */
-    public function testActiveLocale()
-    {
-        $this->assertEquals(
-            get_class($this->app['twig']->getFunction('active_locale')),
-            'Twig_SimpleFunction'
-        );
-    }
-
-    /**
-     * Tests an active link for the English.
-     */
-    public function testEnglishActiveLocale()
-    {
-        $crawler = $this->getCrawler('/en/');
+        $crawler = $this->getCrawler($path);
         $this->assertlinks($crawler, 'ul.lang', array(
-            'numberOfLinks' => 3,
-            'contentOfActiveLink' => 'En'
+            'content_of_active_link' => $locale
         ));
-    }
-
-    /**
-     * Tests an active link for the French.
-     */
-    public function testFrenchActiveLocale()
-    {
-        $crawler = $this->getCrawler('/fr/');
-        $this->assertlinks($crawler, 'ul.lang', array(
-            'numberOfLinks' => 3,
-            'contentOfActiveLink' => 'Fr'
-        ));
-    }
-
-    /**
-     * Tests an active link for the Ukrainian.
-     */
-    public function testUkrainianActiveLocale()
-    {
-        $crawler = $this->getCrawler('/uk/');
-        $this->assertlinks($crawler, 'ul.lang', array(
-            'numberOfLinks' => 3,
-            'contentOfActiveLink' => 'Укр'
-        ));
-    }
-
-    /**
-     * Tests the `localelink_path` Twig function.
-     */
-    public function testLocaleLinkPath()
-    {
-        $this->assertEquals(
-            get_class($this->app['twig']->getFunction('localelink_path')),
-            'Twig_SimpleFunction'
-        );
     }
 
     /**
      * Tests localelink paths for lang links.
+     *
+     * @dataProvider uriProvider
      */
-    public function testLocaleLinkPaths()
+    public function testLocaleLinkPaths($path, $url, $content, $locale)
     {
-        $crawler = $this->getCrawler('/en/');
+        $crawler = $this->getCrawler($path);
         $this->assertEquals(
-            $crawler->selectLink('En')->link()->getUri(),
-            'http://localhost/en/'
-        );
-        $this->assertEquals(
-            $crawler->selectLink('Fr')->link()->getUri(),
-            'http://localhost/fr/'
-        );
-        $this->assertEquals(
-            $crawler->selectLink('Укр')->link()->getUri(),
-            'http://localhost/uk/'
+            $crawler->selectLink($locale)->link()->getUri(),
+            $url
         );
     }
 }
