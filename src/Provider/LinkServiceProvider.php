@@ -60,8 +60,11 @@ class LinkServiceProvider implements ServiceProviderInterface
 
         $app->before(function (Request $request) use ($app) {
             $locale = $request->getLocale();
-            if (!$app['system_locales'][$locale]) {
-                $app->abort(404, 'Locale "' . $locale . '" does not exist.');
+            if (!isset($app['system_locales'][$locale])) {
+                return $app->abort(
+                    404,
+                    'Locale "' . $locale . '" does not exist.'
+                );
             }
             $app['i18n_uri.parsed_path'] = $app['i18n_uri']->getParsedPath();
             $app['i18n_uri.locale'] = $app['i18n_uri']->getParsedLocale();
