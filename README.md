@@ -83,6 +83,10 @@ $app->get('/{_locale}/', function (Application $app) {
     return $app['twig']->render('links.twig');
 })->bind('home');
 
+$app->get('/some/page/', function (Application $app) {
+    return $app['twig']->render('links.twig');
+})->bind('some-page');
+
 $app->get('/{_locale}/page/', function (Application $app) {
     return $app['twig']->render('links.twig');
 })->bind('page');
@@ -100,12 +104,19 @@ $app->get('/{_locale}/page/', function (Application $app) {
 </head>
 <body>
 <ul class="nav">
-    <li {{- active_link('home') }}><a href="{{ path('home') }}">Home</a></li>
-    <li {{- active_link('page') }}><a href="{{ path('page') }}">Page</a></li>
+    <li {{- active_link('home') }}>
+        <a href="{{ path('home') }}">Home</a>
+    </li>
+    <li {{- active_link('page') }}>
+        <a href="{{ path('page') }}">Page</a>
+    </li>
+    <li {{- active_link('some-page', 'last-nav-item') }}>
+        <a href="{{ path('some-page') }}">Page</a>
+    </li>
 </ul>
 <ul class="lang">
     {% for locale, params in app.system_locales %}
-    <li {{- active_locale(locale) }}>
+    <li {{- active_locale(locale, 'lang-item') }}>
         <a href="{{ localelink_path(locale) }}" title="{{ params.name }}">
             {{ params.abbr }}
         </a>
@@ -118,7 +129,7 @@ $app->get('/{_locale}/page/', function (Application $app) {
 
 ### Result
 
-##### /en/page/
+##### http://example.com/en/page/
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -128,21 +139,28 @@ $app->get('/{_locale}/page/', function (Application $app) {
 </head>
 <body>
 <ul class="nav">
-    <li><a href="/en/">Home</a></li>
-    <li class="active"><a href="/en/page/">Page</a></li>
+    <li>
+        <a href="/en/">Home</a>
+    </li>
+    <li class="active">
+        <a href="/en/page/">Page</a>
+    </li>
+    <li class="last-nav-item">
+        <a href="/some/page/">Some page</a>
+    </li>
 </ul>
 <ul class="lang">
-    <li class="active">
+    <li class="lang-item active">
         <a href="/en/page/" title="English">
             En
         </a>
     </li>
-    <li>
+    <li class="lang-item">
         <a href="/fr/page/" title="Français">
             Fr
         </a>
     </li>
-    <li>
+    <li class="lang-item">
         <a href="/uk/page/" title="Українська">
             Укр
         </a>
