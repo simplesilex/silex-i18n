@@ -72,7 +72,7 @@ $app['system_locales'] = array(
         'name' => 'Українська',
     ),
 );
-$app['locale_default'] = 'en';
+$app['locale'] = 'en';
 
 $app['twig.path'] = __DIR__ . '/../templates';
 
