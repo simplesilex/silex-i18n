@@ -46,7 +46,8 @@ class LinkServiceProvider implements ServiceProviderInterface
                 'name' => 'Українська',
             ),
         );
-        $app['locale_default'] = 'en';
+        $app['locale'] = 'en';
+        $app['locale_fallbacks'] = array($app['locale']);
 
         /**
          * Initializes this provider
