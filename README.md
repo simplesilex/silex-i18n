@@ -14,16 +14,8 @@ run the `php composer.phar install` command to install it:
 ```json
 {
     "require": {
-        "silex/silex": "~1.2",
-        "symfony/twig-bridge": "~2.4",
         "simplesilex/silex-i18n": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/simplesilex/silex-i18n"
-        }
-    ]
+    }
 }
 ```
 
