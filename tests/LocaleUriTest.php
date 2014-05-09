@@ -19,7 +19,7 @@ use SimpleSilex\SilexI18n\LocaleUri;
  */
 class LocaleUriTest extends \PHPUnit_Framework_TestCase
 {
-    protected $locals;
+    protected $locales;
     protected $testObject;
 
     /**
@@ -27,7 +27,7 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->locals = array(
+        $this->locales = array(
             'en_US' => array('name' => 'English'),
             'en-GB' => array('name' => 'English'),
             'fr'    => array('name' => 'Français'),
@@ -40,7 +40,7 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
      */
     protected function init($uri)
     {
-        $this->testObject = new LocaleUri($uri, $this->locals);
+        $this->testObject = new LocaleUri($uri, $this->locales);
     }
 
     /**

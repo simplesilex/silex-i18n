@@ -1,7 +1,7 @@
 {
     "name": "simplesilex/silex-i18n",
     "description": "Silex internationalization tools",
-    "homepage": "http://www.simplesilex.com/",
+    "keywords": ["silex","i18n","l10n","internationalization", "localization","locale"],
     "license": "MIT",
     "authors": [
         {
@@ -10,11 +10,11 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "silex/silex": "1.2.*@dev",
+        "symfony/twig-bridge": ">=2.3,<2.6-dev"
     },
     "require-dev": {
-        "silex/silex": "1.2.*@dev",
-        "symfony/twig-bridge": "2.5.*@dev",
         "symfony/browser-kit": "2.5.*@dev",
         "symfony/css-selector": "2.5.*@dev"
     },
