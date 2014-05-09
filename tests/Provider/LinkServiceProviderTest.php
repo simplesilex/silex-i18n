@@ -14,6 +14,7 @@ use Silex\WebTestCase;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DomCrawler\Crawler;
 use SimpleSilex\SilexI18n\Provider\LinkServiceProvider;
 
@@ -24,6 +25,17 @@ use SimpleSilex\SilexI18n\Provider\LinkServiceProvider;
  */
 class LinkServiceProviderTest extends WebTestCase
 {
+    protected $client;
+
+    /**
+     * PHPUnit setUp.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->client = $this->createClient();
+    }
+
     /**
      * Gets an instance of Silex application.
      *
@@ -52,7 +64,7 @@ class LinkServiceProviderTest extends WebTestCase
         $app['twig.path'] = __DIR__ . '/../templates';
 
         $app['system_locales'] = array(
-            'en' => array(
+            'en-US' => array(
                 'abbr' => 'En',
                 'name' => 'English',
             ),
@@ -60,12 +72,16 @@ class LinkServiceProviderTest extends WebTestCase
                 'abbr' => 'Fr',
                 'name' => 'Français',
             ),
-            'uk' => array(
+            'uk_UA' => array(
                 'abbr' => 'Укр',
                 'name' => 'Українська',
             ),
         );
-        $app['locale_default'] = 'en';
+        $app['locale'] = 'en-US';
+
+        $app->error(function (\Exception $e) use ($app) {
+            return new Response('Fail');
+        });
 
         /**
          * Defines some controllers
@@ -86,22 +102,6 @@ class LinkServiceProviderTest extends WebTestCase
     }
 
     /**
-     * Gets an instance of Crawler.
-     *
-     * @param string $uri URI path
-     *
-     * @return Crawler The instance of Crawler
-     */
-    protected function getCrawler($uri)
-    {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $uri);
-        $this->assertTrue($client->getResponse()->isOk());
-
-        return $crawler;
-    }
-
-    /**
      * Assertions for links.
      *
      * @param Crawler $crawler      The instance of Crawler
@@ -111,26 +111,21 @@ class LinkServiceProviderTest extends WebTestCase
     protected function assertlinks(Crawler $crawler, $listSelector, $params)
     {
         if ('ul.nav' === $listSelector) {
-            $this->assertEquals(
-                count($crawler->filter($listSelector . ' > li')),
-                3
-            );
-            $this->assertEquals(
-                count($crawler->filter($listSelector . ' > li.class-1')),
-                2
-            );
-            $this->assertEquals(
-                count($crawler->filter($listSelector . ' > li.class-2')),
-                1
+            $selectors = array(
+                ' > li' => 3,
+                ' > li.class-1' => 2,
+                ' > li.class-2' => 1,
             );
         } elseif ('ul.lang' === $listSelector) {
-            $this->assertEquals(
-                count($crawler->filter($listSelector . ' > li')),
-                3
+            $selectors = array(
+                ' > li' => 3,
+                ' > li.lang-item' => 3,
             );
+        }
+        foreach ($selectors as $selector => $quantity) {
             $this->assertEquals(
-                count($crawler->filter($listSelector . ' > li.lang-item')),
-                3
+                count($crawler->filter($listSelector . $selector)),
+                $quantity
             );
         }
         $this->assertEquals(
@@ -193,44 +188,51 @@ class LinkServiceProviderTest extends WebTestCase
     {
         return array(
             array(
-                '/en/',
-                'http://localhost/en/',
+                'http://localhost/en-US/',
+                '/en-US/',
+                'en-US',
                 'Home',
                 'En',
             ),
             array(
-                '/fr/',
                 'http://localhost/fr/',
+                '/fr/',
+                'fr',
                 'Home',
                 'Fr',
             ),
             array(
-                '/uk/',
-                'http://localhost/uk/',
+                'http://localhost/uk_UA/',
+                '/uk_UA/',
+                'uk_UA',
                 'Home',
                 'Укр',
             ),
             array(
-                '/en/page/',
-                'http://localhost/en/page/',
+                'http://localhost/en-US/page/',
+                '/en-US/page/',
+                'en-US',
                 'Page',
                 'En',
             ),
             array(
-                '/fr/page/',
                 'http://localhost/fr/page/',
+                '/fr/page/',
+                'fr',
                 'Page',
                 'Fr',
             ),
             array(
-                '/uk/page/',
-                'http://localhost/uk/page/',
+                'http://localhost/uk_UA/page/',
+                '/uk_UA/page/',
+                'uk_UA',
                 'Page',
                 'Укр',
             ),
             array(
-                '/some/page/',
                 'http://localhost/some/page/',
+                '/some/page/',
+                'en-US',
                 'Some page',
                 'En',
             ),
@@ -242,11 +244,11 @@ class LinkServiceProviderTest extends WebTestCase
      *
      * @dataProvider uriProvider
      */
-    public function testActiveLink($path, $url, $content, $locale)
+    public function testActiveLink($url, $path, $locale, $content, $abbr)
     {
-        $crawler = $this->getCrawler($path);
+        $crawler = $this->client->request('GET', $path);
         $this->assertlinks($crawler, 'ul.nav', array(
-            'content_of_active_link' => $content
+            'content_of_active_link' => $abbr
         ));
     }
 
@@ -255,11 +257,11 @@ class LinkServiceProviderTest extends WebTestCase
      *
      * @dataProvider uriProvider
      */
-    public function testActiveLocale($path, $url, $content, $locale)
+    public function testActiveLocale($url, $path, $locale, $content, $abbr)
     {
-        $crawler = $this->getCrawler($path);
+        $crawler = $this->client->request('GET', $path);
         $this->assertlinks($crawler, 'ul.lang', array(
-            'content_of_active_link' => $locale
+            'content_of_active_link' => $abbr
         ));
     }
 
@@ -268,12 +270,35 @@ class LinkServiceProviderTest extends WebTestCase
      *
      * @dataProvider uriProvider
      */
-    public function testLocaleLinkPaths($path, $url, $content, $locale)
+    public function testLocaleLinkPaths($url, $path, $locale, $content, $abbr)
     {
-        $crawler = $this->getCrawler($path);
+        $crawler = $this->client->request('GET', $path);
         $this->assertEquals(
-            $crawler->selectLink($locale)->link()->getUri(),
+            $crawler->selectLink($abbr)->link()->getUri(),
             $url
         );
+    }
+
+    /**
+     * FailProvider.
+     */
+    public function failProvider()
+    {
+        return array(
+            array('/es/page/'),
+            array('/zz/page/'),
+            array('/some/page2/')
+        );
+    }
+
+    /**
+     * Tests localelink paths for lang links.
+     *
+     * @dataProvider failProvider
+     */
+    public function testFailPaths($path)
+    {
+        $crawler = $this->client->request('GET', $path);
+        $this->assertFalse($this->client->getResponse()->isOk());
     }
 }

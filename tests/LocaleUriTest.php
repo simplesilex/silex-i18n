@@ -27,7 +27,6 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-
         $this->locals = array(
             'en_US' => array('name' => 'English'),
             'en-GB' => array('name' => 'English'),
