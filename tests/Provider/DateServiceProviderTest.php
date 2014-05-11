@@ -65,7 +65,7 @@ class DateServiceProviderTest extends WebTestCase
          * Defines some controllers
          */
         $app->get('/{_locale}/', function (Application $app) {
-            return $app['twig']->render('links.twig');
+            return $app['twig']->render('dates.twig');
         })->bind('home');
 
         return $app;
