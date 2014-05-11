@@ -31,11 +31,7 @@ class LocaleUri
     {
         $this->uri = $requestUri;
 
-        $locales = '';
-        foreach ($localeList as $locale => $params) {
-            $locales .= $locale . '|';
-        }
-        $locales = rtrim($locales, '|');
+        $locales = implode('|', array_keys($localeList));
         $patterns = array(
             '/^\/(' . $locales . ')\//',
             '/^\/(' . $locales . ')$/'
