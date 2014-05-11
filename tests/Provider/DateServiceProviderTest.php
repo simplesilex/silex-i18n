@@ -32,6 +32,7 @@ class DateServiceProviderTest extends WebTestCase
     public function setUp()
     {
         parent::setUp();
+        date_default_timezone_set('Europe/London');
         $this->client = $this->createClient();
     }
 
@@ -101,8 +102,14 @@ class DateServiceProviderTest extends WebTestCase
          */
         $app->get('/{_locale}/', function (Application $app) {
             return $app['twig']->render('dates.twig', array(
-                $date_format => 'd.m.Y H:i:s';
-                $test_date => '2014-05-11 23:48:46',
+                'format' => array(
+                    'datetime' => 'd.m.Y H:i:s',
+                    'short_date' => 'd.m.y',
+                    'medium_date' => 'd.m.Y',
+                    'long_date' => 'j. F Y',
+                    'full_date' => 'l, j. F Y',
+                ),
+                'test_date' => '2014-05-11 23:48:46',
             ));
         })->bind('home');
 
@@ -123,5 +130,17 @@ class DateServiceProviderTest extends WebTestCase
     public function testTwigEnvironment()
     {
         $this->assertEquals(get_class($this->app['twig']), 'Twig_Environment');
+    }
+
+    /**
+     * Tests active links.
+     */
+    public function testDates()
+    {
+        $crawler = $this->client->request('GET', '/de/');
+        $this->assertEquals(
+            count($crawler->filter('div.datetime')),
+            1
+        );
     }
 }

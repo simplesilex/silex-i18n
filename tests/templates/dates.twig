@@ -5,10 +5,10 @@
     <title>Tests dates</title>
 </head>
 <body>
-    <div class="datetime">{{ test_date|date(date_format) }}</div>
-    <div class="short-date">{{ test_date|date(date_format) }}</div>
-    <div class="medium-date">{{ test_date|date(date_format) }}</div>
-    <div class="long-date">{{ test_date|date(date_format) }}</div>
-    <div class="full-date">{{ test_date|date(date_format) }}</div>
+    <div class="datetime">{{ test_date|date(format.datetime) }}</div>
+    <div class="short-date">{{ test_date|date(format.short_date) }}</div>
+    <div class="medium-date">{{ test_date|date(format.medium_date) }}</div>
+    <div class="long-date">{{ test_date|date(format.long_date) }}</div>
+    <div class="full-date">{{ test_date|date(format.full_date) }}</div>
 </body>
 </html>
