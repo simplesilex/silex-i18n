@@ -14,6 +14,8 @@ namespace SimpleSilex\SilexI18n\Tests\Provider;
 use Silex\WebTestCase;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
+use Symfony\Component\DomCrawler\Crawler;
+use SimpleSilex\SilexI18n\Provider\DateServiceProvider;
 
 /**
  * Tests DateServiceProvider.
@@ -22,6 +24,17 @@ use Silex\Provider\TwigServiceProvider;
  */
 class DateServiceProviderTest extends WebTestCase
 {
+    protected $client;
+
+    /**
+     * PHPUnit setUp.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->client = $this->createClient();
+    }
+
     /**
      * Gets an instance of Silex application.
      *
@@ -38,6 +51,7 @@ class DateServiceProviderTest extends WebTestCase
          * Registers some providers
          */
         $app->register(new TwigServiceProvider());
+        $app->register(new DateServiceProvider());
 
         /**
          * Configures the application
@@ -46,6 +60,13 @@ class DateServiceProviderTest extends WebTestCase
         $app['exception_handler']->disable();
 
         $app['twig.path'] = __DIR__ . '/../templates';
+
+        /**
+         * Defines some controllers
+         */
+        $app->get('/{_locale}/', function (Application $app) {
+            return $app['twig']->render('links.twig');
+        })->bind('home');
 
         return $app;
     }
