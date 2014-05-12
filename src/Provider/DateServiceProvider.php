@@ -56,7 +56,7 @@ class DateServiceProvider implements ServiceProviderInterface
             'fr' => array(
                 'name' => 'Français',
                 'datetime' => 'd/m/Y H:i:s',
-                'short_date' => 'm/d/y', // 17/04/14
+                'short_date' => 'd/m/y', // 17/04/14
                 'medium_date' => 'd M. Y', // 17 Apr. 2014
                 'long_date' => 'j F Y', // 17 Avril 2014
                 'full_date' => 'l j F Y', // Jeudi 17 Avril 2014

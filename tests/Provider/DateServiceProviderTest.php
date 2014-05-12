@@ -90,8 +90,8 @@ class DateServiceProviderTest extends WebTestCase
             'fr' => array(
                 'name' => 'Français',
                 'datetime' => 'd/m/Y H:i:s',
-                'short_date' => 'm/d/y', // 17/04/14
-                'medium_date' => 'd M. Y', // 17 Apr. 2014
+                'short_date' => 'd/m/y', // 17/04/14
+                'medium_date' => 'd M Y', // 17 Apr. 2014
                 'long_date' => 'j F Y', // 17 Avril 2014
                 'full_date' => 'l j F Y', // Jeudi 17 Avril 2014
             ),
@@ -100,14 +100,14 @@ class DateServiceProviderTest extends WebTestCase
         /**
          * Defines some controllers
          */
-        $app->get('/{_locale}/', function (Application $app) {
+        $app->get('/{_locale}/', function (Application $app, $_locale) {
             return $app['twig']->render('dates.twig', array(
                 'format' => array(
-                    'datetime' => 'd.m.Y H:i:s',
-                    'short_date' => 'd.m.y',
-                    'medium_date' => 'd.m.Y',
-                    'long_date' => 'j. F Y',
-                    'full_date' => 'l, j. F Y',
+                    'datetime' => $app['system_locales'][$_locale]['datetime'],
+                    'short' => $app['system_locales'][$_locale]['short_date'],
+                    'medium' => $app['system_locales'][$_locale]['medium_date'],
+                    'long' => $app['system_locales'][$_locale]['long_date'],
+                    'full' => $app['system_locales'][$_locale]['full_date'],
                 ),
                 'test_date' => '2014-05-11 23:48:46',
             ));
@@ -133,14 +133,81 @@ class DateServiceProviderTest extends WebTestCase
     }
 
     /**
-     * Tests active links.
+     * DateProvider.
      */
-    public function testDates()
+    public function dateProvider()
     {
-        $crawler = $this->client->request('GET', '/de/');
+        return array(
+            array(
+                'en-US',
+                array(
+                    'datetime' => '5/11/2014 23:48:46',
+                    'short_date' => '5/11/14',
+                    'medium_date' => 'May 11, 2014',
+                    'long_date' => 'May 11, 2014',
+                    'full_date' => 'Sunday, May 11, 2014',
+                )
+            ),
+            array(
+                'en',
+                array(
+                    'datetime' => '11/05/2014 23:48:46',
+                    'short_date' => '11/05/14',
+                    'medium_date' => '11-May-2014',
+                    'long_date' => '11 May 2014',
+                    'full_date' => '11 May 2014',
+                )
+            ),
+            array(
+                'de',
+                array(
+                    'datetime' => '11.05.2014 23:48:46',
+                    'short_date' => '11.05.14',
+                    'medium_date' => '11.05.2014',
+                    'long_date' => '11. May 2014',
+                    'full_date' => 'Sunday, 11. May 2014',
+                )
+            ),
+            array(
+                'fr',
+                array(
+                    'datetime' => '11/05/2014 23:48:46',
+                    'short_date' => '11/05/14',
+                    'medium_date' => '11 May 2014',
+                    'long_date' => '11 May 2014',
+                    'full_date' => 'Sunday 11 May 2014',
+                )
+            ),
+        );
+    }
+
+    /**
+     * Tests active links.
+     *
+     * @dataProvider dateProvider
+     */
+    public function testDates($locale, $formats)
+    {
+        $crawler = $this->client->request('GET', "/$locale/");
         $this->assertEquals(
-            count($crawler->filter('div.datetime')),
-            1
+            trim($crawler->filter('div.datetime')->text()),
+            $formats['datetime']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('div.short-date')->text()),
+            $formats['short_date']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('div.medium-date')->text()),
+            $formats['medium_date']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('div.long-date')->text()),
+            $formats['long_date']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('div.full-date')->text()),
+            $formats['full_date']
         );
     }
 }
