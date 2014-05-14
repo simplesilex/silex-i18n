@@ -99,11 +99,14 @@ class DateServiceProviderTest extends WebTestCase
         /**
          * Defines some controllers
          */
-        $app->get('/{_locale}/', function (Application $app, $_locale) {
-            return $app['twig']->render('dates.twig', array(
-                'test_date' => '2014-05-11 23:48:46',
-            ));
-        })->bind('home');
+        $app->get(
+            '/{_locale}/{timestamp}',
+            function (Application $app, $_locale, $timestamp) {
+                return $app['twig']->render('dates.twig', array(
+                    'test_date' => date('c', $timestamp),
+                ));
+            }
+        )->bind('home');
 
         return $app;
     }
@@ -143,6 +146,7 @@ class DateServiceProviderTest extends WebTestCase
         return array(
             array(
                 'en-US',
+                '2014-05-11 23:48:46',
                 array(
                     'datetime' => '5/11/2014 23:48:46',
                     'short_date' => '5/11/14',
@@ -153,6 +157,7 @@ class DateServiceProviderTest extends WebTestCase
             ),
             array(
                 'en',
+                '2014-05-11 23:48:46',
                 array(
                     'datetime' => '11/05/2014 23:48:46',
                     'short_date' => '11/05/14',
@@ -163,6 +168,7 @@ class DateServiceProviderTest extends WebTestCase
             ),
             array(
                 'de',
+                '2014-05-11 23:48:46',
                 array(
                     'datetime' => '11.05.2014 23:48:46',
                     'short_date' => '11.05.14',
@@ -173,6 +179,7 @@ class DateServiceProviderTest extends WebTestCase
             ),
             array(
                 'fr',
+                '2014-05-11 23:48:46',
                 array(
                     'datetime' => '11/05/2014 23:48:46',
                     'short_date' => '11/05/14',
@@ -189,9 +196,10 @@ class DateServiceProviderTest extends WebTestCase
      *
      * @dataProvider dateProvider
      */
-    public function testDates($locale, $formats)
+    public function testDates($locale, $date, $formats)
     {
-        $crawler = $this->client->request('GET', "/$locale/");
+        $timestamp = strtotime($date);
+        $crawler = $this->client->request('GET', "/$locale/$timestamp");
         $this->assertEquals(
             trim($crawler->filter('div.datetime')->text()),
             $formats['datetime']
