@@ -14,7 +14,7 @@ run the `php composer.phar install` command to install it:
 ```json
 {
     "require": {
-        "simplesilex/silex-i18n": "dev-master"
+        "simplesilex/silex-i18n": "v0.1.6"
     }
 }
 ```
