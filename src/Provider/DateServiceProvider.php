@@ -63,6 +63,38 @@ class DateServiceProvider implements ServiceProviderInterface
             ),
         );
         $app['locale'] = 'en';
+
+        /**
+         * Extends Twig
+         */
+        $app->extend('twig', function (\Twig_Environment $twig) use ($app) {
+            /**
+             * Adds the `localedate` filter.
+             *
+             * Use:
+             * <div>{{ entity.date|localedate }}</div>
+             * or:
+             * <div>{{ entity.date|localedate('Y-m-d') }}</div>
+             */
+            $twig->addFilter(
+                new \Twig_SimpleFilter(
+                    'localedate',
+                    function (
+                        $date,
+                        $format = null,
+                        $timezone = null
+                    ) use ($twig, $app) {
+                        return twig_date_format_filter(
+                            $twig,
+                            $date,
+                            $format,
+                            $timezone = null
+                        );
+                    }
+                )
+            );
+            return $twig;
+        });
     }
 
     /**

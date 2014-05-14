@@ -14,7 +14,6 @@ namespace SimpleSilex\SilexI18n\Tests\Provider;
 use Silex\WebTestCase;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
-use Symfony\Component\DomCrawler\Crawler;
 use SimpleSilex\SilexI18n\Provider\DateServiceProvider;
 
 /**
@@ -133,6 +132,17 @@ class DateServiceProviderTest extends WebTestCase
     }
 
     /**
+     * Tests Twig filter.
+     */
+    public function testTwigFilter()
+    {
+        $this->assertEquals(
+            get_class($this->app['twig']->getFilter('localedate')),
+            'Twig_SimpleFilter'
+        );
+    }
+
+    /**
      * DateProvider.
      */
     public function dateProvider()
@@ -182,7 +192,7 @@ class DateServiceProviderTest extends WebTestCase
     }
 
     /**
-     * Tests active links.
+     * Tests date formats.
      *
      * @dataProvider dateProvider
      */
