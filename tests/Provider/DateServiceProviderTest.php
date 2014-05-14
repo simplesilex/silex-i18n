@@ -31,7 +31,7 @@ class DateServiceProviderTest extends WebTestCase
     public function setUp()
     {
         parent::setUp();
-        date_default_timezone_set('Europe/London');
+        // date_default_timezone_set('Europe/London');
         $this->client = $this->createClient();
     }
 
@@ -102,8 +102,11 @@ class DateServiceProviderTest extends WebTestCase
         $app->get(
             '/{_locale}/{timestamp}',
             function (Application $app, $_locale, $timestamp) {
+                $datetime = new \DateTime();
+                $datetime->setTimestamp($timestamp);
                 return $app['twig']->render('dates.twig', array(
-                    'test_date' => date('c', $timestamp),
+                    'date_str' => date('c', $timestamp),
+                    'datetime' => $datetime
                 ));
             }
         )->bind('home');
@@ -201,23 +204,43 @@ class DateServiceProviderTest extends WebTestCase
         $timestamp = strtotime($date);
         $crawler = $this->client->request('GET', "/$locale/$timestamp");
         $this->assertEquals(
-            trim($crawler->filter('div.datetime')->text()),
+            trim($crawler->filter('.date-str > .date-time')->text()),
             $formats['datetime']
         );
         $this->assertEquals(
-            trim($crawler->filter('div.short-date')->text()),
+            trim($crawler->filter('.date-str > .short-date')->text()),
             $formats['short_date']
         );
         $this->assertEquals(
-            trim($crawler->filter('div.medium-date')->text()),
+            trim($crawler->filter('.date-str > .medium-date')->text()),
             $formats['medium_date']
         );
         $this->assertEquals(
-            trim($crawler->filter('div.long-date')->text()),
+            trim($crawler->filter('.date-str > .long-date')->text()),
             $formats['long_date']
         );
         $this->assertEquals(
-            trim($crawler->filter('div.full-date')->text()),
+            trim($crawler->filter('.date-str > .full-date')->text()),
+            $formats['full_date']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('.datetime > .date-time')->text()),
+            $formats['datetime']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('.datetime > .short-date')->text()),
+            $formats['short_date']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('.datetime > .medium-date')->text()),
+            $formats['medium_date']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('.datetime > .long-date')->text()),
+            $formats['long_date']
+        );
+        $this->assertEquals(
+            trim($crawler->filter('.datetime > .full-date')->text()),
             $formats['full_date']
         );
     }
