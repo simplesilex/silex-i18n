@@ -57,7 +57,7 @@ class DateServiceProvider implements ServiceProviderInterface
                 'name' => 'Français',
                 'datetime' => 'd/m/Y H:i:s',
                 'short_date' => 'd/m/y', // 17/04/14
-                'medium_date' => 'd M. Y', // 17 Apr. 2014
+                'medium_date' => 'd M Y', // 17 Apr 2014
                 'long_date' => 'j F Y', // 17 Avril 2014
                 'full_date' => 'l j F Y', // Jeudi 17 Avril 2014
             ),
@@ -74,16 +74,22 @@ class DateServiceProvider implements ServiceProviderInterface
              * Use:
              * <div>{{ entity.date|localedate }}</div>
              * or:
-             * <div>{{ entity.date|localedate('Y-m-d') }}</div>
+             * <div>{{ entity.date|localedate('short_date') }}</div>
              */
             $twig->addFilter(
                 new \Twig_SimpleFilter(
                     'localedate',
                     function (
                         $date,
-                        $format = null,
+                        $type = null,
                         $timezone = null
                     ) use ($twig, $app) {
+                        $locale = $app['system_locales'][$app['locale']];
+                        if (null !== $type && isset($locale[$type])) {
+                            $format = $locale[$type];
+                        } else {
+                            $format = null;
+                        }
                         return twig_date_format_filter(
                             $twig,
                             $date,

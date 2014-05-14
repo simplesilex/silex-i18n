@@ -90,7 +90,7 @@ class DateServiceProviderTest extends WebTestCase
                 'name' => 'Français',
                 'datetime' => 'd/m/Y H:i:s',
                 'short_date' => 'd/m/y', // 17/04/14
-                'medium_date' => 'd M Y', // 17 Apr. 2014
+                'medium_date' => 'd M Y', // 17 Apr 2014
                 'long_date' => 'j F Y', // 17 Avril 2014
                 'full_date' => 'l j F Y', // Jeudi 17 Avril 2014
             ),
@@ -101,13 +101,6 @@ class DateServiceProviderTest extends WebTestCase
          */
         $app->get('/{_locale}/', function (Application $app, $_locale) {
             return $app['twig']->render('dates.twig', array(
-                'format' => array(
-                    'datetime' => $app['system_locales'][$_locale]['datetime'],
-                    'short' => $app['system_locales'][$_locale]['short_date'],
-                    'medium' => $app['system_locales'][$_locale]['medium_date'],
-                    'long' => $app['system_locales'][$_locale]['long_date'],
-                    'full' => $app['system_locales'][$_locale]['full_date'],
-                ),
                 'test_date' => '2014-05-11 23:48:46',
             ));
         })->bind('home');
