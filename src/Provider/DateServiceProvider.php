@@ -94,7 +94,7 @@ class DateServiceProvider implements ServiceProviderInterface
                             $twig,
                             $date,
                             $format,
-                            $timezone = null
+                            $timezone
                         );
                     }
                 )
