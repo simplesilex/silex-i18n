@@ -58,6 +58,9 @@ class DateServiceProvider implements ServiceProviderInterface
                 new \Twig_SimpleFilter(
                     'localedate',
                     function ($date, $type = null) use ($twig, $app) {
+                        /**
+                         * Converts a date according to a format.
+                         */
                         $convert = function ($date, $format) use ($twig, $app) {
                             return twig_date_format_filter(
                                 $twig,
@@ -67,6 +70,9 @@ class DateServiceProvider implements ServiceProviderInterface
                             );
                         };
 
+                        /**
+                         * Translates names of months and days of week.
+                         */
                         $map = function ($element) use ($app, $convert, $date) {
                             $char = '/[dDjlNSwzWFmMntLoYyaABgGhHisueIOPTZcrU]/';
                             if (preg_match($char, $element)) {
