@@ -12,7 +12,8 @@
     "require": {
         "php": ">=5.3.3",
         "silex/silex": "1.2.*@dev",
-        "symfony/twig-bridge": ">=2.3,<2.6-dev"
+        "symfony/twig-bridge": ">=2.3,<2.6-dev",
+        "symfony/translation": "~2.3"
     },
     "require-dev": {
         "symfony/browser-kit": "2.5.*@dev",
