@@ -11,6 +11,7 @@
 namespace SimpleSilex\SilexI18n\Provider;
 
 use Silex\Application;
+use Silex\Translator;
 use Silex\ServiceProviderInterface;
 
 /**
@@ -57,14 +58,44 @@ class DateServiceProvider implements ServiceProviderInterface
                 new \Twig_SimpleFilter(
                     'localedate',
                     function ($date, $type = null) use ($twig, $app) {
+                        $convert = function ($date, $format) use ($twig, $app) {
+                            return twig_date_format_filter(
+                                $twig,
+                                $date,
+                                $format,
+                                null // TODO: Add timezone support.
+                            );
+                        };
+
+                        $map = function ($element) use ($app, $convert, $date) {
+                            $char = '/[dDjlNSwzWFmMntLoYyaABgGhHisueIOPTZcrU]/';
+                            if (preg_match($char, $element)) {
+                                $value = $convert($date, $element);
+                                if (preg_match('/[DlMF]/', $element)) {
+                                    $value = $app['translator']->trans($value);
+                                }
+                            } else {
+                                $value = $element;
+                            }
+                            return $value;
+                        };
+
                         $locale = $app['system_locales'][$app['locale']];
-                        if (null !== $type && isset($locale[$type])) {
-                            $format = $locale[$type];
-                        } else {
-                            $format = null;
+                        if (null === $type || !isset($locale[$type])) {
+                            return $convert($date, null);
                         }
-                        // timezone = null. TODO: Add timezone support.
-                        return twig_date_format_filter($twig, $date, $format);
+                        $format = $locale[$type];
+                        $expr = (isset($app['translator']));
+                        if (!preg_match('/[DlMF]/', $format) || !$expr) {
+                            return $convert($date, $format);
+                        }
+                        $result = '';
+                        for ($i = 0; $i < mb_strlen($format, 'UTF-8'); $i++) {
+                            $elements[] = mb_substr($format, $i, 1, "UTF-8");
+                        }
+                        $result = array_map($map, $elements);
+
+                        return implode($result);
                     }
                 )
             );

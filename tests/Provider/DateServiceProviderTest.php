@@ -188,8 +188,8 @@ class DateServiceProviderTest extends WebTestCase
                     'date_time' => '11.05.2014 23:48:46',
                     'short_date' => '11.05.14',
                     'medium_date' => '11.05.2014',
-                    'long_date' => '11. May 2014',
-                    'full_date' => 'Sunday, 11. May 2014',
+                    'long_date' => '11. Mai 2014',
+                    'full_date' => 'Sonntag, 11. Mai 2014',
                 )
             ),
             array(
@@ -198,9 +198,9 @@ class DateServiceProviderTest extends WebTestCase
                 array(
                     'date_time' => '11/05/2014 23:48:46',
                     'short_date' => '11/05/14',
-                    'medium_date' => '11 May 2014',
-                    'long_date' => '11 May 2014',
-                    'full_date' => 'Sunday 11 May 2014',
+                    'medium_date' => '11 mai 2014',
+                    'long_date' => '11 mai 2014',
+                    'full_date' => 'dimanche 11 mai 2014',
                 )
             ),
         );
