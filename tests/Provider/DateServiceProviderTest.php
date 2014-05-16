@@ -55,12 +55,22 @@ class DateServiceProviderTest extends WebTestCase
         $app->register(new TranslationServiceProvider());
         $app->register(new DateServiceProvider());
 
-        $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
-            $translator->addResource('array', include(__DIR__ . '/../locales/de.php'), 'de');
-            $translator->addResource('array', include(__DIR__ . '/../locales/fr.php'), 'fr');
+        $app['translator'] = $app->share(
+            $app->extend('translator', function($translator, $app) {
+                $translator->addResource(
+                    'array',
+                    include(__DIR__ . '/../locales/de.php'),
+                    'de'
+                );
+                $translator->addResource(
+                    'array',
+                    include(__DIR__ . '/../locales/fr.php'),
+                    'fr'
+                );
 
-            return $translator;
-        }));
+                return $translator;
+            })
+        );
 
         /**
          * Configures the application
@@ -113,7 +123,7 @@ class DateServiceProviderTest extends WebTestCase
          */
         $app->get(
             '/{_locale}/{timestamp}',
-            function (Application $app, $_locale, $timestamp) {
+            function (Application $app, $timestamp) {
                 $datetime = new \DateTime();
                 $datetime->setTimestamp($timestamp);
                 return $app['twig']->render('dates.twig', array(
@@ -121,7 +131,7 @@ class DateServiceProviderTest extends WebTestCase
                     'datetime' => $datetime
                 ));
             }
-        )->bind('home');
+        );
 
         return $app;
     }
