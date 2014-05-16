@@ -83,6 +83,7 @@ $app->get('/{_locale}/page/', function (Application $app) {
     return $app['twig']->render('links.twig');
 })->bind('page');
 
+return $app;
 ?>
 ```
 
