@@ -18,8 +18,8 @@ namespace SimpleSilex\SilexI18n;
 class LocaleUri
 {
     protected $uri;
-    protected $parsedPath;
-    protected $parsedLocale;
+    protected $clippedPath;
+    protected $locale;
 
     /**
      * Constructor.
@@ -36,9 +36,9 @@ class LocaleUri
             '/^\/(' . $locales . ')\//',
             '/^\/(' . $locales . ')$/'
         );
-        $this->parsedPath = preg_replace($patterns, array('/', ''), $this->uri);
-        $this->parsedLocale = ltrim(
-            str_replace($this->parsedPath, '', $this->uri),
+        $this->clippedPath = preg_replace($patterns, array('/', ''), $this->uri);
+        $this->locale = ltrim(
+            str_replace($this->clippedPath, '', $this->uri),
             '/'
         );
     }
@@ -58,9 +58,9 @@ class LocaleUri
      *
      * @return string The snippet of the URI
      */
-    public function getParsedPath()
+    public function getClippedPath()
     {
-        return $this->parsedPath;
+        return $this->clippedPath;
     }
 
     /**
@@ -68,8 +68,8 @@ class LocaleUri
      *
      * @return string The locale
      */
-    public function getParsedLocale()
+    public function getLocale()
     {
-        return $this->parsedLocale;
+        return $this->locale;
     }
 }

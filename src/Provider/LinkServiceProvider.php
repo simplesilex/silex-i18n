@@ -58,13 +58,13 @@ class LinkServiceProvider implements ServiceProviderInterface
                     'Locale "' . $locale . '" does not exist.'
                 );
             }
-            $app['i18n_uri.parsed_path'] = $app['i18n_uri']->getParsedPath();
-            $app['i18n_uri.locale'] = $app['i18n_uri']->getParsedLocale();
+            $app['i18n_uri.clipped_path'] = $app['i18n_uri']->getClippedPath();
+            $app['i18n_uri.locale'] = $app['i18n_uri']->getLocale();
         });
 
         $app->error(function (\Exception $e) use ($app) {
-            $app['i18n_uri.parsed_path'] = $app['i18n_uri']->getParsedPath();
-            $app['i18n_uri.locale'] = $app['i18n_uri']->getParsedLocale();
+            $app['i18n_uri.clipped_path'] = $app['i18n_uri']->getClippedPath();
+            $app['i18n_uri.locale'] = $app['i18n_uri']->getLocale();
             $app['locale'] = $app['i18n_uri.locale'];
             $app['request_context']->setParameters(array(
                 '_locale' => $app['locale']
@@ -161,9 +161,9 @@ class LinkServiceProvider implements ServiceProviderInterface
                     function ($locale) use ($app) {
                         $expr = ($locale === $app['locale']);
                         if ('' === $app['i18n_uri.locale'] && $expr) {
-                            return $app['i18n_uri.parsed_path'];
+                            return $app['i18n_uri.clipped_path'];
                         }
-                        return '/' . $locale . $app['i18n_uri.parsed_path'];
+                        return '/' . $locale . $app['i18n_uri.clipped_path'];
                     },
                     array('is_safe' => array('html'))
                 )

@@ -82,24 +82,24 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests getting `parsedPath` property.
+     * Tests getting `clippedPath` property.
      *
      * @dataProvider uriProvider
      */
-    public function testGettingParsedPath($uri, $path, $locale)
+    public function testGettingClippedPath($uri, $path, $locale)
     {
         $this->init($uri);
-        $this->assertEquals($this->testObject->getParsedPath(), $path);
+        $this->assertEquals($this->testObject->getClippedPath(), $path);
     }
 
     /**
-     * Tests getting `parsedLocale` property.
+     * Tests getting `locale` property.
      *
      * @dataProvider uriProvider
      */
-    public function testGettingParsedLocale($uri, $path, $locale)
+    public function testGettingLocale($uri, $path, $locale)
     {
         $this->init($uri);
-        $this->assertEquals($this->testObject->getParsedLocale(), $locale);
+        $this->assertEquals($this->testObject->getLocale(), $locale);
     }
 }
