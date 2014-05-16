@@ -37,17 +37,8 @@ class LinkServiceProvider implements ServiceProviderInterface
                 'abbr' => 'En',
                 'name' => 'English',
             ),
-            'fr' => array(
-                'abbr' => 'Fr',
-                'name' => 'Français',
-            ),
-            'uk' => array(
-                'abbr' => 'Укр',
-                'name' => 'Українська',
-            ),
         );
         $app['locale'] = 'en';
-        $app['locale_fallbacks'] = array($app['locale']);
 
         /**
          * Initializes this provider
