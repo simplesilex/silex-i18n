@@ -145,7 +145,7 @@ class LinkServiceProviderTest extends WebTestCase
      */
     public function testInitApplication()
     {
-        $this->assertEquals(get_class($this->app), 'Silex\Application');
+        $this->assertTrue($this->app instanceof Application);
     }
 
     /**
@@ -153,7 +153,7 @@ class LinkServiceProviderTest extends WebTestCase
      */
     public function testTwigEnvironment()
     {
-        $this->assertEquals(get_class($this->app['twig']), 'Twig_Environment');
+        $this->assertTrue($this->app['twig'] instanceof \Twig_Environment);
     }
 
     /**

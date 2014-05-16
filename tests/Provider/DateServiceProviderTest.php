@@ -53,7 +53,6 @@ class DateServiceProviderTest extends WebTestCase
          */
         $app->register(new TwigServiceProvider());
         $app->register(new TranslationServiceProvider());
-        $app->register(new TranslationServiceProvider());
         $app->register(new DateServiceProvider());
 
         $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
@@ -132,7 +131,7 @@ class DateServiceProviderTest extends WebTestCase
      */
     public function testInitApplication()
     {
-        $this->assertEquals(get_class($this->app), 'Silex\Application');
+        $this->assertTrue($this->app instanceof Application);
     }
 
     /**
@@ -140,7 +139,7 @@ class DateServiceProviderTest extends WebTestCase
      */
     public function testTwigEnvironment()
     {
-        $this->assertEquals(get_class($this->app['twig']), 'Twig_Environment');
+        $this->assertTrue($this->app['twig'] instanceof \Twig_Environment);
     }
 
     /**
