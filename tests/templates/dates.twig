@@ -6,14 +6,14 @@
 </head>
 <body>
     <div class="date-str">
-        <div class="date-time">{{ date_str|localedate('datetime') }}</div>
+        <div class="date-time">{{ date_str|localedate('date_time') }}</div>
         <div class="short-date">{{ date_str|localedate('short_date') }}</div>
         <div class="medium-date">{{ date_str|localedate('medium_date') }}</div>
         <div class="long-date">{{ date_str|localedate('long_date') }}</div>
         <div class="full-date">{{ date_str|localedate('full_date') }}</div>
     </div>
     <div class="datetime">
-        <div class="date-time">{{ datetime|localedate('datetime') }}</div>
+        <div class="date-time">{{ datetime|localedate('date_time') }}</div>
         <div class="short-date">{{ datetime|localedate('short_date') }}</div>
         <div class="medium-date">{{ datetime|localedate('medium_date') }}</div>
         <div class="long-date">{{ datetime|localedate('long_date') }}</div>

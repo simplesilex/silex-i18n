@@ -52,10 +52,16 @@ class DateServiceProviderTest extends WebTestCase
          * Registers some providers
          */
         $app->register(new TwigServiceProvider());
-        $app->register(new TranslationServiceProvider(), array(
-            'locale_fallbacks' => array('en'),
-        ));
+        $app->register(new TranslationServiceProvider());
+        $app->register(new TranslationServiceProvider());
         $app->register(new DateServiceProvider());
+
+        $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+            $translator->addResource('array', include(__DIR__ . '/../locales/de.php'), 'de');
+            $translator->addResource('array', include(__DIR__ . '/../locales/fr.php'), 'fr');
+
+            return $translator;
+        }));
 
         /**
          * Configures the application
@@ -68,198 +74,40 @@ class DateServiceProviderTest extends WebTestCase
         $app['system_locales'] = array(
             'en-US' => array(
                 'name' => 'American',
-                'datetime' => 'n/j/Y H:i:s',
-                'short_date' => 'n/j/y', // 4/17/14
-                'medium_date' => 'M j, Y', // Apr 17, 2014
-                'long_date' => 'F j, Y', // April 17, 2014
-                'full_date' => 'l, F j, Y', //Thursday, April 17, 2014
+                'date_time' => 'n/j/Y g:i:s A', // 4/17/2014 4:32:12 AM
+                'short_date' => 'n/j/y',        // 4/17/14
+                'medium_date' => 'M j, Y',      // Apr 17, 2014
+                'long_date' => 'F j, Y',        // April 17, 2014
+                'full_date' => 'l, F j, Y',     // Thursday, April 17, 2014
             ),
             'en' => array(
                 'name' => 'English',
-                'datetime' => 'd/m/Y H:i:s',
-                'short_date' => 'd/m/y', // 17/04/14
-                'medium_date' => 'd-M-Y', // 17-Apr-2014
-                'long_date' => 'j F Y', // 17 April 2014
-                'full_date' => 'j F Y', // 17 April 2014
+                'date_time' => 'd/m/Y H:i:s',   // 17/04/2014 16:32:12
+                'short_date' => 'd/m/y',        // 17/04/14
+                'medium_date' => 'd-M-Y',       // 17-Apr-2014
+                'long_date' => 'j F Y',         // 17 April 2014
+                'full_date' => 'j F Y',         // 17 April 2014
             ),
             'de' => array(
                 'name' => 'Deutsch',
-                'datetime' => 'd.m.Y H:i:s',
-                'short_date' => 'd.m.y', // 17.04.14
-                'medium_date' => 'd.m.Y', // 17.04.2014
-                'long_date' => 'j. F Y', // 17. April 2014
-                'full_date' => 'l, j. F Y', // Donnerstag, 17. April 2014
+                'date_time' => 'd.m.Y H:i:s',   // 17.04.2014 16:32:12
+                'short_date' => 'd.m.y',        // 17.04.14
+                'medium_date' => 'd.m.Y',       // 17.04.2014
+                'long_date' => 'j. F Y',        // 17. April 2014
+                'full_date' => 'l, j. F Y',     // Donnerstag, 17. April 2014
             ),
             'fr' => array(
                 'name' => 'Français',
-                'datetime' => 'd/m/Y H:i:s',
-                'short_date' => 'd/m/y', // 17/04/14
-                'medium_date' => 'd M Y', // 17 Apr 2014
-                'long_date' => 'j F Y', // 17 Avril 2014
-                'full_date' => 'l j F Y', // Jeudi 17 Avril 2014
+                'date_time' => 'd/m/Y H:i:s',   // 17/04/2014 16:32:12
+                'short_date' => 'd/m/y',        // 17/04/14
+                'medium_date' => 'd M Y',       // 17 avril 2014
+                'long_date' => 'j F Y',         // 17 avril 2014
+                'full_date' => 'l j F Y',       // jeudi 17 avril 2014
             ),
         );
+        $app['locale'] = 'en';
+        $app['locale_fallbacks'] = array('en');
 
-        $app['translator.domains'] = array(
-            'date' => array(
-                'en-US' => array(
-                    'January' => 'January',
-                    'Jan' => 'Jan',
-                    'February' => 'February',
-                    'Feb' => 'Feb',
-                    'March' => 'March',
-                    'Mar' => 'Mar',
-                    'April' => 'April',
-                    'Apr' => 'Apr',
-                    'May' => 'May',
-                    'June' => 'June',
-                    'Jun' => 'Jun',
-                    'July' => 'July',
-                    'Jul' => 'Jul',
-                    'August' => 'August',
-                    'Aug' => 'Aug',
-                    'September' => 'September',
-                    'Sep' => 'Sep',
-                    'October' => 'October',
-                    'Oct' => 'Oct',
-                    'November' => 'November',
-                    'Nov' => 'Nov',
-                    'December' => 'December',
-                    'Dec' => 'Dec',
-                    'Sunday' => 'Sunday',
-                    'Sun' => 'Sun',
-                    'Monday' => 'Monday',
-                    'Mon' => 'Mon',
-                    'Tuesday' => 'Tuesday',
-                    'Tue' => 'Tue',
-                    'Wednesday' => 'Wednesday',
-                    'Wed' => 'Wed',
-                    'Thursday' => 'Thursday',
-                    'Thu' => 'Thu',
-                    'Friday' => 'Friday',
-                    'Fri' => 'Fri',
-                    'Saturday' => 'Saturday',
-                    'Sat' => 'Sat',
-                ),
-                'en' => array(
-                    'January' => 'January',
-                    'Jan' => 'Jan',
-                    'February' => 'February',
-                    'Feb' => 'Feb',
-                    'March' => 'March',
-                    'Mar' => 'Mar',
-                    'April' => 'April',
-                    'Apr' => 'Apr',
-                    'May' => 'May',
-                    'June' => 'June',
-                    'Jun' => 'Jun',
-                    'July' => 'July',
-                    'Jul' => 'Jul',
-                    'August' => 'August',
-                    'Aug' => 'Aug',
-                    'September' => 'September',
-                    'Sep' => 'Sep',
-                    'October' => 'October',
-                    'Oct' => 'Oct',
-                    'November' => 'November',
-                    'Nov' => 'Nov',
-                    'December' => 'December',
-                    'Dec' => 'Dec',
-                    'Sunday' => 'Sunday',
-                    'Sun' => 'Sun',
-                    'Monday' => 'Monday',
-                    'Mon' => 'Mon',
-                    'Tuesday' => 'Tuesday',
-                    'Tue' => 'Tue',
-                    'Wednesday' => 'Wednesday',
-                    'Wed' => 'Wed',
-                    'Thursday' => 'Thursday',
-                    'Thu' => 'Thu',
-                    'Friday' => 'Friday',
-                    'Fri' => 'Fri',
-                    'Saturday' => 'Saturday',
-                    'Sat' => 'Sat',
-                ),
-                'de' => array(
-                    'January' => 'Januar',
-                    'Jan' => 'Jan',
-                    'February' => 'Februar',
-                    'Feb' => 'Feb',
-                    'March' => 'März',
-                    'Mar' => 'Mär',
-                    'April' => 'April',
-                    'Apr' => 'Apr',
-                    'May' => 'Mai',
-                    'June' => 'Juni',
-                    'Jun' => 'Jun',
-                    'July' => 'Juli',
-                    'Jul' => 'Jul',
-                    'August' => 'August',
-                    'Aug' => 'Aug',
-                    'September' => 'September',
-                    'Sep' => 'Sep',
-                    'October' => 'Oktober',
-                    'Oct' => 'Okt',
-                    'November' => 'November',
-                    'Nov' => 'Nov',
-                    'December' => 'Dezember',
-                    'Dec' => 'Dez',
-                    'Sunday' => 'Sonntag',
-                    'Sun' => 'So',
-                    'Monday' => 'Montag',
-                    'Mon' => 'Mo',
-                    'Tuesday' => 'Dienstag',
-                    'Tue' => 'Di',
-                    'Wednesday' => 'Mittwoch',
-                    'Wed' => 'Mi',
-                    'Thursday' => 'Donnerstag',
-                    'Thu' => 'Do',
-                    'Friday' => 'Freitag',
-                    'Fri' => 'Fr',
-                    'Saturday' => 'Samstag',
-                    'Sat' => 'Sa',
-                ),
-                'fr' => array(
-                    'January' => 'janvier',
-                    'Jan' => 'janv.',
-                    'February' => 'février',
-                    'Feb' => 'févr.',
-                    'March' => 'mars',
-                    'Mar' => 'mars',
-                    'April' => 'avril',
-                    'Apr' => 'avril',
-                    'May' => 'mai',
-                    'June' => 'juin',
-                    'Jun' => 'juin',
-                    'July' => 'juillet',
-                    'Jul' => 'juil.',
-                    'August' => 'août',
-                    'Aug' => 'août',
-                    'September' => 'septembre',
-                    'Sep' => 'sept.',
-                    'October' => 'octobre',
-                    'Oct' => 'oct.',
-                    'November' => 'novembre',
-                    'Nov' => 'nov.',
-                    'December' => 'décembre',
-                    'Dec' => 'déc.',
-                    'Sunday' => 'dimanche',
-                    'Sun' => 'dim.',
-                    'Monday' => 'lundi',
-                    'Mon' => 'lun.',
-                    'Tuesday' => 'mardi',
-                    'Tue' => 'mar.',
-                    'Wednesday' => 'mercredi',
-                    'Wed' => 'mer.',
-                    'Thursday' => 'jeudi',
-                    'Thu' => 'jeu.',
-                    'Friday' => 'vendredi',
-                    'Fri' => 'ven.',
-                    'Saturday' => 'samedi',
-                    'Sat' => 'sam.',
-                ),
-            ),
-        );
 
         /**
          * Defines controller
@@ -316,7 +164,7 @@ class DateServiceProviderTest extends WebTestCase
                 'en-US',
                 '2014-05-11 23:48:46',
                 array(
-                    'datetime' => '5/11/2014 23:48:46',
+                    'date_time' => '5/11/2014 11:48:46 PM',
                     'short_date' => '5/11/14',
                     'medium_date' => 'May 11, 2014',
                     'long_date' => 'May 11, 2014',
@@ -327,7 +175,7 @@ class DateServiceProviderTest extends WebTestCase
                 'en',
                 '2014-05-11 23:48:46',
                 array(
-                    'datetime' => '11/05/2014 23:48:46',
+                    'date_time' => '11/05/2014 23:48:46',
                     'short_date' => '11/05/14',
                     'medium_date' => '11-May-2014',
                     'long_date' => '11 May 2014',
@@ -338,7 +186,7 @@ class DateServiceProviderTest extends WebTestCase
                 'de',
                 '2014-05-11 23:48:46',
                 array(
-                    'datetime' => '11.05.2014 23:48:46',
+                    'date_time' => '11.05.2014 23:48:46',
                     'short_date' => '11.05.14',
                     'medium_date' => '11.05.2014',
                     'long_date' => '11. May 2014',
@@ -349,7 +197,7 @@ class DateServiceProviderTest extends WebTestCase
                 'fr',
                 '2014-05-11 23:48:46',
                 array(
-                    'datetime' => '11/05/2014 23:48:46',
+                    'date_time' => '11/05/2014 23:48:46',
                     'short_date' => '11/05/14',
                     'medium_date' => '11 May 2014',
                     'long_date' => '11 May 2014',
@@ -370,7 +218,7 @@ class DateServiceProviderTest extends WebTestCase
         $crawler = $this->client->request('GET', "/$locale/$timestamp");
         $this->assertEquals(
             trim($crawler->filter('.date-str > .date-time')->text()),
-            $formats['datetime']
+            $formats['date_time']
         );
         $this->assertEquals(
             trim($crawler->filter('.date-str > .short-date')->text()),
@@ -390,7 +238,7 @@ class DateServiceProviderTest extends WebTestCase
         );
         $this->assertEquals(
             trim($crawler->filter('.datetime > .date-time')->text()),
-            $formats['datetime']
+            $formats['date_time']
         );
         $this->assertEquals(
             trim($crawler->filter('.datetime > .short-date')->text()),
