@@ -86,26 +86,26 @@ return $app;
     <title>Test</title>
 </head>
 <body>
-<ul class="nav">
-    <li {{- active_link('home') }}>
-        <a href="{{ path('home') }}">Home</a>
-    </li>
-    <li {{- active_link('page') }}>
-        <a href="{{ path('page') }}">Page</a>
-    </li>
-    <li {{- active_link('some-page', 'last-nav-item') }}>
-        <a href="{{ path('some-page') }}">Page</a>
-    </li>
-</ul>
-<ul class="lang">
-    {% for locale, params in app.system_locales %}
-    <li {{- active_locale(locale, 'lang-item') }}>
-        <a href="{{ localelink_path(locale) }}" title="{{ params.name }}">
-            {{ params.abbr }}
-        </a>
-    </li>
-    {% endfor %}
-</ul>
+    <ul class="nav">
+        <li {{- active_link('home') }}>
+            <a href="{{ path('home') }}">Home</a>
+        </li>
+        <li {{- active_link('page') }}>
+            <a href="{{ path('page') }}">Page</a>
+        </li>
+        <li {{- active_link('some-page', 'last-nav-item') }}>
+            <a href="{{ path('some-page') }}">Page</a>
+        </li>
+    </ul>
+    <ul class="lang">
+        {% for locale, params in app.system_locales %}
+        <li {{- active_locale(locale, 'lang-item') }}>
+            <a href="{{ localelink_path(locale) }}" title="{{ params.name }}">
+                {{ params.abbr }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
 ```
@@ -121,34 +121,34 @@ return $app;
     <title>Test</title>
 </head>
 <body>
-<ul class="nav">
-    <li>
-        <a href="/en/">Home</a>
-    </li>
-    <li class="active">
-        <a href="/en/page/">Page</a>
-    </li>
-    <li class="last-nav-item">
-        <a href="/some/page/">Some page</a>
-    </li>
-</ul>
-<ul class="lang">
-    <li class="lang-item active">
-        <a href="/en/page/" title="English">
-            En
-        </a>
-    </li>
-    <li class="lang-item">
-        <a href="/fr/page/" title="Français">
-            Fr
-        </a>
-    </li>
-    <li class="lang-item">
-        <a href="/uk/page/" title="Українська">
-            Укр
-        </a>
-    </li>
-</ul>
+    <ul class="nav">
+        <li>
+            <a href="/en/">Home</a>
+        </li>
+        <li class="active">
+            <a href="/en/page/">Page</a>
+        </li>
+        <li class="last-nav-item">
+            <a href="/some/page/">Some page</a>
+        </li>
+    </ul>
+    <ul class="lang">
+        <li class="lang-item active">
+            <a href="/en/page/" title="English">
+                En
+            </a>
+        </li>
+        <li class="lang-item">
+            <a href="/fr/page/" title="Français">
+                Fr
+            </a>
+        </li>
+        <li class="lang-item">
+            <a href="/uk/page/" title="Українська">
+                Укр
+            </a>
+        </li>
+    </ul>
 </body>
 </html>
 ```
