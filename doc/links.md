@@ -7,15 +7,23 @@ Silex-i18n LinkServiceProvider
 ##### web/index.php
 ```php
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 $app = require __DIR__ . '/../app/src/app.php';
 $app->run();
+
 ?>
 ```
 
 ##### app/src/app.php
 ```php
 <?php
+
+use Silex\Application;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
+use SimpleSilex\SilexI18n\Provider\LinkServiceProvider;
+
 /**
  * Creates an application
  */
@@ -24,9 +32,9 @@ $app = new Silex\Application();
 /**
  * Registers providers
  */
-$app->register(new Silex\Provider\TwigServiceProvider());
-$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-$app->register(new SimpleSilex\SilexI18n\Provider\LinkServiceProvider());
+$app->register(new TwigServiceProvider());
+$app->register(new UrlGeneratorServiceProvider());
+$app->register(new LinkServiceProvider());
 
 /**
  * Configures the application
@@ -65,6 +73,7 @@ $app->get('/{_locale}/page/', function (Application $app) {
 })->bind('page');
 
 return $app;
+
 ?>
 ```
 

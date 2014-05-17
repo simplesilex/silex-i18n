@@ -8,8 +8,8 @@ Silex-i18n works with PHP 5.3.3 or later.
 
 ## Features
 
-* The **LinkServiceProvider** makes it easy to create locale links. [Learn more](https://github.com/simplesilex/silex-i18n/blob/master/doc/links.md "LinkServiceProvider")
-* The **DateServiceProvider** makes it easy to create date formats. [Learn more](https://github.com/simplesilex/silex-i18n/blob/master/doc/dates.md "DateServiceProvider")
+* The **LinkServiceProvider** makes it easy to create locale links. [Learn more.](https://github.com/simplesilex/silex-i18n/blob/master/doc/links.md "LinkServiceProvider")
+* The **DateServiceProvider** makes it easy to create date formats. [Learn more.](https://github.com/simplesilex/silex-i18n/blob/master/doc/dates.md "DateServiceProvider")
 
 ## Installation
 

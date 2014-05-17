@@ -7,9 +7,11 @@ Silex-i18n DateServiceProvider
 ##### web/index.php
 ```php
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 $app = require __DIR__ . '/../app/src/app.php';
 $app->run();
+
 ?>
 ```
 
@@ -17,19 +19,23 @@ $app->run();
 ```php
 <?php
 
+use Silex\Application;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
+use SimpleSilex\SilexI18n\Provider\DateServiceProvider;
 
 /**
  * Creates an application
  */
-$app = new Silex\Application();
+$app = new Application();
 
 /**
  * Registers providers
  */
-$app->register(new Silex\Provider\TwigServiceProvider());
-$app->register(new Silex\Provider\TranslationServiceProvider());
-$app->register(new SimpleSilex\SilexI18n\Provider\DateServiceProvider());
+$app->register(new TwigServiceProvider());
+$app->register(new TranslationServiceProvider());
+$app->register(new DateServiceProvider());
 
 $app['translator'] = $app->share(
     $app->extend('translator', function($translator, $app) {
@@ -91,6 +97,7 @@ $app->get(
 );
 
 return $app;
+
 ?>
 ```
 
