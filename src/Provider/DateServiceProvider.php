@@ -88,20 +88,19 @@ class DateServiceProvider implements ServiceProviderInterface
 
                         $locale = $app['system_locales'][$app['locale']];
                         if (null === $type || !isset($locale[$type])) {
-                            return $convert($date, null);
+                            $result = $convert($date, null);
                         }
                         $format = $locale[$type];
                         $expr = (isset($app['translator']));
                         if (!preg_match('/[DlMF]/', $format) || !$expr) {
-                            return $convert($date, $format);
+                            $result = $convert($date, $format);
                         }
-                        $result = '';
                         for ($i = 0; $i < mb_strlen($format, 'UTF-8'); $i++) {
                             $elements[] = mb_substr($format, $i, 1, "UTF-8");
                         }
-                        $result = array_map($map, $elements);
+                        $result = implode(array_map($map, $elements));
 
-                        return implode($result);
+                        return $result;
                     }
                 )
             );
