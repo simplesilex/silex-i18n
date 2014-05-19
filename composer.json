@@ -13,13 +13,13 @@
         "php": ">=5.3.3",
         "silex/silex": "1.2.*@dev",
         "symfony/twig-bridge": ">=2.3,<2.6-dev",
-        "symfony/config": "~2.3",
-        "symfony/yaml": "~2.3",
-        "symfony/translation": "~2.3"
+        "symfony/config": ">=2.3,<2.6-dev",
+        "symfony/yaml": ">=2.3,<2.6-dev",
+        "symfony/translation": ">=2.3,<2.6-dev"
     },
     "require-dev": {
-        "symfony/browser-kit": "2.5.*@dev",
-        "symfony/css-selector": "2.5.*@dev"
+        "symfony/browser-kit": ">=2.3,<2.6-dev",
+        "symfony/css-selector": ">=2.3,<2.6-dev"
     },
     "autoload": {
         "psr-4": { "SimpleSilex\\SilexI18n\\": "src/" }

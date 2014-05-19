@@ -3,7 +3,7 @@
 /**
  * Part of the Silex-i18n package.
  *
- * @package   SilexLocalizer
+ * @package   Silex-i18n
  * @copyright 2014 Yuriy Davletshin
  * @license   http://opensource.org/licenses/mit-license/ The MIT License (MIT)
  * @link      http://www.simplesilex.com/
