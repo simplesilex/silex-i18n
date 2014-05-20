@@ -166,7 +166,7 @@ Sat: Sa
 ##### http://example.com/de/
 ```html
 <!DOCTYPE html>
-<html lang="{{ app.locale }}">
+<html lang="de">
 <head>
     <meta charset="utf-8">
     <title>Tests dates</title>
