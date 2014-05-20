@@ -39,8 +39,11 @@ class DateServiceProvider implements ServiceProviderInterface
                 'full_date' => 'l, F j, Y',     // Thursday, April 17, 2014
             ),
         );
+        // default locale
         $app['locale'] = 'en';
-        $app['locale_fallbacks'] = array($app['locale']);
+        $app['locale_fallbacks'] = function () use ($app) {
+            return array($app['locale']);
+        };
 
         /**
          * Extends Twig
