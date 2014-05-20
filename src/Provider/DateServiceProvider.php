@@ -53,23 +53,40 @@ class DateServiceProvider implements ServiceProviderInterface
              * Adds the `localedate` filter.
              *
              * Use:
-             * <div>{{ entity.date|localedate }}</div>
+             * <div>
+             *     {{ entity.date|localedate }}
+             * </div>
+             *
              * or:
-             * <div>{{ entity.date|localedate('short_date') }}</div>
+             * <div>
+             *     {{ entity.date|localedate('short_date') }}
+             * </div>
+             *
+             * or:
+             * <div>
+             *    {{ entity.date|localedate('short_date', 'Europe/London') }}
+             * </div>
              */
             $twig->addFilter(
                 new \Twig_SimpleFilter(
                     'localedate',
-                    function ($date, $type = null) use ($twig, $app) {
+                    function ($date, $type = null, $timezone = null) use (
+                        $twig,
+                        $app
+                    ) {
                         /**
                          * Converts a date according to a format.
                          */
-                        $convert = function ($date, $format) use ($twig, $app) {
+                        $convert = function ($date, $format) use (
+                            $twig,
+                            $app,
+                            $timezone
+                        ) {
                             return twig_date_format_filter(
                                 $twig,
                                 $date,
                                 $format,
-                                null // TODO: Add timezone support.
+                                $timezone
                             );
                         };
 
