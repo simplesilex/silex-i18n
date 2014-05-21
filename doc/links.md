@@ -43,14 +43,17 @@ $app['system_locales'] = array(
     'en' => array(
         'abbr' => 'En',
         'name' => 'English',
+        'flag' => 'english-flag',
     ),
     'fr' => array(
         'abbr' => 'Fr',
         'name' => 'Français',
+        'flag' => 'french-flag',
     ),
     'uk' => array(
         'abbr' => 'Укр',
         'name' => 'Українська',
+        'flag' => 'ukrainian-flag',
     ),
 );
 $app['locale'] = 'en';
@@ -94,12 +97,12 @@ return $app;
             <a href="{{ path('page') }}">Page</a>
         </li>
         <li {{- active_link('some-page', 'last-nav-item') }}>
-            <a href="{{ path('some-page') }}">Page</a>
+            <a href="{{ path('some-page') }}">Some page (default locale)</a>
         </li>
     </ul>
     <ul class="lang">
         {% for locale, params in app.system_locales %}
-        <li {{- active_locale(locale, 'lang-item') }}>
+        <li {{- active_locale(locale, params.flag) }}>
             <a href="{{ localelink_path(locale) }}" title="{{ params.name }}">
                 {{ params.abbr }}
             </a>
@@ -112,7 +115,48 @@ return $app;
 
 ### Result
 
-##### http://example.com/en/page/
+##### http://example.com/fr/page/
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+</head>
+<body>
+    <ul class="nav">
+        <li>
+            <a href="/fr/">Home</a>
+        </li>
+        <li class="active">
+            <a href="/fr/page/">Page</a>
+        </li>
+        <li class="last-nav-item">
+            <a href="/some/page/">Some page (default locale)</a>
+        </li>
+    </ul>
+    <ul class="lang">
+        <li class="english-flag">
+            <a href="/en/page/" title="English">
+                En
+            </a>
+        </li>
+        <li class="french-flag active">
+            <a href="/fr/page/" title="Français">
+                Fr
+            </a>
+        </li>
+        <li class="ukrainian-flag">
+            <a href="/uk/page/" title="Українська">
+                Укр
+            </a>
+        </li>
+    </ul>
+</body>
+</html>
+```
+
+##### http://example.com/some/page/
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -125,26 +169,26 @@ return $app;
         <li>
             <a href="/en/">Home</a>
         </li>
-        <li class="active">
+        <li>
             <a href="/en/page/">Page</a>
         </li>
-        <li class="last-nav-item">
-            <a href="/some/page/">Some page</a>
+        <li class="last-nav-item active">
+            <a href="/some/page/">Some page (default locale)</a>
         </li>
     </ul>
     <ul class="lang">
-        <li class="lang-item active">
-            <a href="/en/page/" title="English">
+        <li class="english-flag active">
+            <a href="/some/page/" title="English">
                 En
             </a>
         </li>
-        <li class="lang-item">
-            <a href="/fr/page/" title="Français">
+        <li class="french-flag">
+            <a href="/fr/some/page/" title="Français">
                 Fr
             </a>
         </li>
-        <li class="lang-item">
-            <a href="/uk/page/" title="Українська">
+        <li class="ukrainian-flag">
+            <a href="/uk/some/page/" title="Українська">
                 Укр
             </a>
         </li>
@@ -152,3 +196,6 @@ return $app;
 </body>
 </html>
 ```
+
+##### http://example.com/fr/some/page/
+`Status Code:404 Not Found`
