@@ -49,10 +49,7 @@ class LocaleUriTest extends \PHPUnit_Framework_TestCase
     public function testInitObject()
     {
         $this->init('/some/page/');
-        $this->assertEquals(
-            get_class($this->testObject),
-            'SimpleSilex\SilexI18n\LocaleUri'
-        );
+        $this->assertTrue($this->testObject instanceof LocaleUri);
     }
 
     /**

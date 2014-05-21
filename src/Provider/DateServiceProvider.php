@@ -44,6 +44,7 @@ class DateServiceProvider implements ServiceProviderInterface
         $app['locale_fallbacks'] = function () use ($app) {
             return array($app['locale']);
         };
+        $app['encoding'] = 'UTF-8';
 
         /**
          * Extends Twig
@@ -70,55 +71,42 @@ class DateServiceProvider implements ServiceProviderInterface
             $twig->addFilter(
                 new \Twig_SimpleFilter(
                     'localedate',
-                    function ($date, $type = null, $timezone = null) use (
-                        $twig,
-                        $app
-                    ) {
+                    function ($date, $formatType = null, $timezone = null) use ($twig, $app) {
                         /**
                          * Converts a date according to a format.
                          */
-                        $convert = function ($date, $format) use (
-                            $twig,
-                            $app,
-                            $timezone
-                        ) {
-                            return twig_date_format_filter(
-                                $twig,
-                                $date,
-                                $format,
-                                $timezone
-                            );
+                        $convert = function ($date, $format) use ($twig, $app, $timezone) {
+                            return twig_date_format_filter($twig, $date, $format, $timezone);
                         };
 
                         /**
                          * Translates names of months and days of week.
                          */
-                        $map = function ($element) use ($app, $convert, $date) {
-                            $char = '/[dDjlNSwzWFmMntLoYyaABgGhHisueIOPTZcrU]/';
-                            if (preg_match($char, $element)) {
-                                $value = $convert($date, $element);
-                                if (preg_match('/[DlMF]/', $element)) {
+                        $map = function ($symbol) use ($app, $convert, $date) {
+                            $pattern = '/[dDjlNSwzWFmMntLoYyaABgGhHisueIOPTZcrU]/';
+                            if (preg_match($pattern, $symbol)) {
+                                $value = $convert($date, $symbol);
+                                if (preg_match('/[DlMF]/', $symbol)) {
                                     $value = $app['translator']->trans($value);
                                 }
                             } else {
-                                $value = $element;
+                                $value = $symbol;
                             }
                             return $value;
                         };
 
                         $locale = $app['system_locales'][$app['locale']];
-                        if (null === $type || !isset($locale[$type])) {
+                        if (null === $formatType || !isset($locale[$formatType])) {
                             $result = $convert($date, null);
                         }
-                        $format = $locale[$type];
-                        $expr = (isset($app['translator']));
-                        if (!preg_match('/[DlMF]/', $format) || !$expr) {
+                        $format = $locale[$formatType];
+                        if (!preg_match('/[DlMF]/', $format) || !isset($app['translator'])) {
                             $result = $convert($date, $format);
                         }
-                        for ($i = 0; $i < mb_strlen($format, 'UTF-8'); $i++) {
-                            $elements[] = mb_substr($format, $i, 1, "UTF-8");
+                        for ($i = 0; $i < mb_strlen($format, $app['encoding']); $i++) {
+                            $symbols[] = mb_substr($format, $i, 1, $app['encoding']);
                         }
-                        $result = implode(array_map($map, $elements));
+                        $result = implode(array_map($map, $symbols));
 
                         return $result;
                     }

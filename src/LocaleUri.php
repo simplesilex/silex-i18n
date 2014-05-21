@@ -37,10 +37,7 @@ class LocaleUri
             '/^\/(' . $locales . ')$/'
         );
         $this->clippedPath = preg_replace($patterns, array('/', ''), $this->uri);
-        $this->locale = ltrim(
-            str_replace($this->clippedPath, '', $this->uri),
-            '/'
-        );
+        $this->locale = ltrim(str_replace($this->clippedPath, '', $this->uri), '/');
     }
 
     /**

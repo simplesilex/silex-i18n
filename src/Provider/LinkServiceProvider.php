@@ -125,11 +125,11 @@ class LinkServiceProvider implements ServiceProviderInterface
                     'active_locale',
                     function ($locale, $classes = '') use ($app) {
                         $attribute = '';
-                        $expr = ($locale === $app['locale']);
-                        if ($locale === $app['i18n_uri.locale'] && $expr) {
+                        $expression = ($locale === $app['locale']);
+                        if ($locale === $app['i18n_uri.locale'] && $expression) {
                             $classes .= ' ' . $app['i18n_link.active_class'];
                             $attribute = ' class="' . $classes . '"';
-                        } elseif ('' === $app['i18n_uri.locale'] && $expr) {
+                        } elseif ('' === $app['i18n_uri.locale'] && $expression) {
                             $classes .= ' ' . $app['i18n_link.active_class'];
                             $attribute = ' class="' . $classes . '"';
                         } elseif ($classes) {
@@ -159,8 +159,7 @@ class LinkServiceProvider implements ServiceProviderInterface
                 new \Twig_SimpleFunction(
                     'localelink_path',
                     function ($locale) use ($app) {
-                        $expr = ($locale === $app['locale']);
-                        if ('' === $app['i18n_uri.locale'] && $expr) {
+                        if ('' === $app['i18n_uri.locale'] && $locale === $app['locale']) {
                             return $app['i18n_uri.clipped_path'];
                         }
                         return '/' . $locale . $app['i18n_uri.clipped_path'];

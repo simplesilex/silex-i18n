@@ -2,7 +2,7 @@ Silex-i18n DateServiceProvider
 ==============================
 ## Installation
 
-For this example, you must install the `symfony/config` and the `symfony/yaml`.
+You must install the `symfony/config` and the `symfony/yaml` for this example.
 ```json
 {
     "require": {
