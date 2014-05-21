@@ -53,10 +53,7 @@ class LinkServiceProvider implements ServiceProviderInterface
         $app->before(function (Request $request) use ($app) {
             $locale = $request->getLocale();
             if (!isset($app['system_locales'][$locale])) {
-                return $app->abort(
-                    404,
-                    'Locale "' . $locale . '" does not exist.'
-                );
+                return $app->abort(404, 'Locale "' . $locale . '" does not exist.');
             }
             $app['i18n_uri.clipped_path'] = $app['i18n_uri']->getClippedPath();
             $app['i18n_uri.locale'] = $app['i18n_uri']->getLocale();
@@ -66,9 +63,7 @@ class LinkServiceProvider implements ServiceProviderInterface
             $app['i18n_uri.clipped_path'] = $app['i18n_uri']->getClippedPath();
             $app['i18n_uri.locale'] = $app['i18n_uri']->getLocale();
             $app['locale'] = $app['i18n_uri.locale'];
-            $app['request_context']->setParameters(array(
-                '_locale' => $app['locale']
-            ));
+            $app['request_context']->setParameters(array('_locale' => $app['locale']));
             $app['request']->setLocale($app['locale']);
         });
 
@@ -96,9 +91,9 @@ class LinkServiceProvider implements ServiceProviderInterface
                         $attribute = '';
                         if ($route === $app['request']->get('_route')) {
                             $classes .= ' ' . $app['i18n_link.active_class'];
-                            $attribute = ' class="' . $classes . '"';
-                        } elseif ($classes) {
-                            $attribute =  ' class="' . $classes . '"';
+                        }
+                        if ($classes) {
+                            $attribute = ' class="' . ltrim($classes) . '"';
                         }
                         return $attribute;
                     },
@@ -125,15 +120,13 @@ class LinkServiceProvider implements ServiceProviderInterface
                     'active_locale',
                     function ($locale, $classes = '') use ($app) {
                         $attribute = '';
-                        $expression = ($locale === $app['locale']);
-                        if ($locale === $app['i18n_uri.locale'] && $expression) {
-                            $classes .= ' ' . $app['i18n_link.active_class'];
-                            $attribute = ' class="' . $classes . '"';
-                        } elseif ('' === $app['i18n_uri.locale'] && $expression) {
-                            $classes .= ' ' . $app['i18n_link.active_class'];
-                            $attribute = ' class="' . $classes . '"';
-                        } elseif ($classes) {
-                            $attribute =  ' class="' . $classes . '"';
+                        if ($locale === $app['i18n_uri.locale'] || '' === $app['i18n_uri.locale']) {
+                            if ($locale === $app['locale']) {
+                                $classes .= ' ' . $app['i18n_link.active_class'];
+                            }
+                        }
+                        if ($classes) {
+                            $attribute = ' class="' . ltrim($classes) . '"';
                         }
                         return $attribute;
                     },
@@ -160,9 +153,11 @@ class LinkServiceProvider implements ServiceProviderInterface
                     'localelink_path',
                     function ($locale) use ($app) {
                         if ('' === $app['i18n_uri.locale'] && $locale === $app['locale']) {
-                            return $app['i18n_uri.clipped_path'];
+                            $path = $app['i18n_uri.clipped_path'];
+                        } else {
+                            $path = '/' . $locale . $app['i18n_uri.clipped_path'];
                         }
-                        return '/' . $locale . $app['i18n_uri.clipped_path'];
+                        return $path;
                     },
                     array('is_safe' => array('html'))
                 )
