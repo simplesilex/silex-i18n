@@ -95,6 +95,7 @@ class LinkServiceProvider implements ServiceProviderInterface
                         if ($classes) {
                             $attribute = ' class="' . ltrim($classes) . '"';
                         }
+
                         return $attribute;
                     },
                     array('is_safe' => array('html'))
@@ -128,6 +129,7 @@ class LinkServiceProvider implements ServiceProviderInterface
                         if ($classes) {
                             $attribute = ' class="' . ltrim($classes) . '"';
                         }
+
                         return $attribute;
                     },
                     array('is_safe' => array('html'))
@@ -157,11 +159,13 @@ class LinkServiceProvider implements ServiceProviderInterface
                         } else {
                             $path = '/' . $locale . $app['i18n_uri.clipped_path'];
                         }
+
                         return $path;
                     },
                     array('is_safe' => array('html'))
                 )
             );
+
             return $twig;
         });
     }

@@ -13,6 +13,7 @@ namespace SimpleSilex\SilexI18n\Provider;
 use Silex\Application;
 use Silex\Translator;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Makes it easy to create locale dates.
@@ -45,6 +46,16 @@ class DateServiceProvider implements ServiceProviderInterface
             return array($app['locale']);
         };
         $app['encoding'] = 'UTF-8';
+
+        $app->before(function (Request $request) use ($app) {
+            $locale = $request->getLocale();
+            if (!isset($app['system_locales'][$locale])) {
+                return $app->abort(404, 'Locale "' . $locale . '" does not exist.');
+            }
+            if (isset($app['translator'])) {
+                $app['translator']->setLocale($locale);
+            }
+        });
 
         /**
          * Extends Twig
@@ -92,6 +103,7 @@ class DateServiceProvider implements ServiceProviderInterface
                             } else {
                                 $value = $symbol;
                             }
+
                             return $value;
                         };
 
@@ -114,6 +126,7 @@ class DateServiceProvider implements ServiceProviderInterface
                     }
                 )
             );
+
             return $twig;
         });
     }

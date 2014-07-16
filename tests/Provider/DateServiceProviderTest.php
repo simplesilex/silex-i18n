@@ -54,7 +54,7 @@ class DateServiceProviderTest extends WebTestCase
         $app->register(new DateServiceProvider());
 
         $app['translator'] = $app->share(
-            $app->extend('translator', function($translator, $app) {
+            $app->extend('translator', function ($translator, $app) {
                 $translator->addResource('array', include(__DIR__ . '/../locales/de.php'), 'de');
                 $translator->addResource('array', include(__DIR__ . '/../locales/fr.php'), 'fr');
 
@@ -107,17 +107,17 @@ class DateServiceProviderTest extends WebTestCase
         $app['locale'] = 'en';
         $app['locale_fallbacks'] = array('en');
 
-
         /**
          * Defines controller
          */
         $app->get('/{_locale}/{timestamp}', function (Application $app, $timestamp) {
-                $datetime = new \DateTime();
-                $datetime->setTimestamp($timestamp);
-                return $app['twig']->render('dates.twig', array(
-                    'date_str' => date('c', $timestamp),
-                    'datetime' => $datetime
-                ));
+            $datetime = new \DateTime();
+            $datetime->setTimestamp($timestamp);
+
+            return $app['twig']->render('dates.twig', array(
+                'date_str' => date('c', $timestamp),
+                'datetime' => $datetime
+            ));
         });
 
         return $app;
