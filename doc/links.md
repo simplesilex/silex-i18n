@@ -1,5 +1,5 @@
-Silex-i18n LinkServiceProvider
-==============================
+Simplesilex/Silex-i18n LinkServiceProvider
+==========================================
 ## Use
 
 ### Code

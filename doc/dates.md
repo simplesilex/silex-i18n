@@ -1,12 +1,12 @@
-Silex-i18n DateServiceProvider
-==============================
+Simplesilex/Silex-i18n DateServiceProvider
+==========================================
 ## Installation
 
 You must install the `symfony/config` and the `symfony/yaml` for this example.
 ```json
 {
     "require": {
-        "simplesilex/silex-i18n": "0.2.*@dev",
+        "simplesilex/silex-i18n": "~0.2",
         "symfony/config": ">=2.3,<2.6-dev",
         "symfony/yaml": ">=2.3,<2.6-dev"
     }
