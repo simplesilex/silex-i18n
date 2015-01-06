@@ -1,5 +1,5 @@
-Silex-i18n
-==========
+Simplesilex/Silex-i18n
+======================
 [![Build Status](https://travis-ci.org/simplesilex/silex-i18n.svg?branch=master)](https://travis-ci.org/simplesilex/silex-i18n)
 
 Silex internationalization tools based on [Silex][1] micro-framework, [Symfony2][2] components and [Twig][3].
@@ -22,7 +22,7 @@ run the `php composer.phar install` command to install it:
 ```json
 {
     "require": {
-        "simplesilex/silex-i18n": "0.2.*@dev"
+        "simplesilex/silex-i18n": "~0.2"
     }
 }
 ```

@@ -1,7 +1,7 @@
 {
     "name": "simplesilex/silex-i18n",
     "description": "Silex internationalization tools",
-    "keywords": ["silex","i18n","l10n","internationalization","localization","locale"],
+    "keywords": ["silex","twig","i18n","l10n","internationalization","localization","locale"],
     "license": "MIT",
     "authors": [
         {
