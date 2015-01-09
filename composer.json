@@ -12,18 +12,18 @@
     "require": {
         "php": ">=5.3.3",
         "silex/silex": "1.2.*@dev",
-        "symfony/twig-bridge": ">=2.3,<2.6-dev",
-        "symfony/translation": ">=2.3,<2.6-dev",
-        "symfocode/twig-i18n": "0.1.3"
+        "symfony/twig-bridge": "2.6.*",
+        "symfony/translation": "2.6.*",
+        "symfocode/twig-i18n": "~0.2"
     },
     "require-dev": {
-        "symfony/browser-kit": ">=2.3,<2.6-dev",
-        "symfony/css-selector": ">=2.3,<2.6-dev",
-        "phpunit/phpunit": "~3.7"
+        "symfony/browser-kit": "2.6.*",
+        "symfony/css-selector": "2.6.*",
+        "phpunit/phpunit": "4.4.*"
     },
     "suggest": {
-        "symfony/config": ">=2.3,<2.6-dev",
-        "symfony/yaml": ">=2.3,<2.6-dev"
+        "symfony/config": "2.6.*",
+        "symfony/yaml": "2.6.*"
     },
     "autoload": {
         "psr-4": { "SimpleSilex\\SilexI18n\\": "src/" }
