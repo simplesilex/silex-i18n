@@ -6,6 +6,9 @@ Silex internationalization tools based on [Silex][1] micro-framework, [Symfony2]
 
 Silex-i18n works with PHP 5.3.3 or later.
 
+**Version 1.0** will be based on [symfocode/twig-i18n][4].
+**Version 0.3** will be transitional version, and will maintain the current code.
+
 ## Features
 
 * The **LinkServiceProvider** makes it easy to create locale links. [Learn more.](https://github.com/simplesilex/silex-i18n/blob/master/doc/links.md "LinkServiceProvider")
@@ -42,3 +45,4 @@ Silex-i18n is licensed under the MIT license.
 [1]: http://silex.sensiolabs.org
 [2]: http://symfony.com
 [3]: http://twig.sensiolabs.org
+[4]: https://github.com/symfocode/twig-i18n
