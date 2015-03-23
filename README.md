@@ -6,7 +6,7 @@ Silex internationalization tools based on [Silex][1] micro-framework, [Symfony2]
 
 Silex-i18n works with PHP 5.3.3 or later.
 
-**Version 1.0** will be based on [symfocode/twig-i18n][4].
+**Version 1.0** will be based on [symfocode/twig-i18n][4].  
 **Version 0.3** will be transitional version, and will maintain the current code.
 
 ## Features
